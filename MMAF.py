@@ -1,5 +1,9 @@
 # En este archivo estará la librería de funciones que se utilizarán en el programa principal
 
+#LIBRERIAS: 
+ import math
+
+# Función Actividad 1 (Población de Ardillas)
 def calcular_poblacion(juveniles_iniciales, adultas_iniciales, tasa_reproduccion, tasa_conversion, tasa_supervivencia, epocas):
     """
     Calcula la población de ardillas a lo largo de varios años.
@@ -39,4 +43,34 @@ def calcular_poblacion(juveniles_iniciales, adultas_iniciales, tasa_reproduccion
     for epocas, juveniles, adultas, total in lista_poblaciones:
         print(f"{epocas:<5}{int(juveniles):<15}{int(adultas):<15}{int(total):<15}")
     
+    return 
+
+# Función Actividad 2 
+def analizar_diferencia_cuadrados(radio_exterior, radio_interior, altura): 
+    """
+    Analiza el impacto de errores comunes al calcular el volumen de una capa cilíndrica.
+    Comparación entre:
+    - Cálculo correcto: π(R^2 - r^2)h
+    - Cálculo erróneo: π(R - r)^2h
+    """
+    # Cálculo correcto
+    volumen_correcto = math.pi * (radio_exterior**2 - radio_interior**2) * altura
+
+    # Error común: cuadrado de la diferencia
+    volumen_erroneo = math.pi * (radio_exterior - radio_interior)**2 * altura
+
+    # Diferencia entre ambos cálculos
+    diferencia = volumen_correcto - volumen_erroneo
+
+    # Resultados
+    print("=== Resultados ===")
+    print(f"Radio exterior (R): {radio_exterior} m")
+    print(f"Radio interior (r): {radio_interior} m")
+    print(f"Altura (h): {altura} m")
+    print("\n--- Cálculo correcto ---")
+    print(f"Volumen correcto (π(R² - r²)h): {volumen_correcto:.2f} m³")
+    print("\n--- Cálculo erróneo ---")
+    print(f"Volumen erróneo (π(R - r)²h): {volumen_erroneo:.2f} m³")
+    print("\n--- Diferencia entre ambos ---")
+    print(f"Diferencia: {diferencia:.2f} m³")
     return 
