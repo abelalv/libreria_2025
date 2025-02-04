@@ -1,7 +1,7 @@
 # En este archivo estará la librería de funciones que se utilizarán en el programa principal
 
 #LIBRERIAS: 
- import math
+import math
 
 # Función Actividad 1 (Población de Ardillas)
 def calcular_poblacion(juveniles_iniciales, adultas_iniciales, tasa_reproduccion, tasa_conversion, tasa_supervivencia, epocas):
