@@ -2,8 +2,10 @@
 
 #LIBRERIAS: 
 import math
+from sympy import symbols, Eq, solve
 
 # Función Actividad 1 (Población de Ardillas)
+# -------------------------------------------------------------------------------------
 def calcular_poblacion(juveniles_iniciales, adultas_iniciales, tasa_reproduccion, tasa_conversion, tasa_supervivencia, epocas):
     """
     Calcula la población de ardillas a lo largo de varios años.
@@ -44,8 +46,10 @@ def calcular_poblacion(juveniles_iniciales, adultas_iniciales, tasa_reproduccion
         print(f"{epocas:<5}{int(juveniles):<15}{int(adultas):<15}{int(total):<15}")
     
     return 
+# -------------------------------------------------------------------------------------
 
-# Función Actividad 2 
+# Función Actividad 2 (Diferencia de cuadrados)
+# -------------------------------------------------------------------------------------
 def analizar_diferencia_cuadrados(radio_exterior, radio_interior, altura): 
     """
     Analiza el impacto de errores comunes al calcular el volumen de una capa cilíndrica.
@@ -74,3 +78,38 @@ def analizar_diferencia_cuadrados(radio_exterior, radio_interior, altura):
     print("\n--- Diferencia entre ambos ---")
     print(f"Diferencia: {diferencia:.2f} m³")
     return 
+# -------------------------------------------------------------------------------------
+
+#Funciones Actividad 3 (Pepito Perez)
+# -------------------------------------------------------------------------------------
+# Función para el costo cuadrático de Pepito_Perez
+def costo_pepito_perez(t):
+    return -2000 * t**2 + 20000 * t + 800000
+
+# Función para el costo lineal de Interprase
+def costo_interprase(t):
+    return 850000 + 22000 * t
+
+# Función para el costo lineal de Soluciones Express
+def costo_soluciones(t):
+    return 1150000 + 420 * t
+
+# Resolver la ecuación cuadrática de Pepito_Perez para encontrar el tiempo
+def calcular_tiempo_limite(limite):
+    t = symbols('t', real=True)
+    ecuacion = Eq(costo_pepito_perez(t), limite)
+    soluciones = solve(ecuacion, t)
+    # Filtrar soluciones válidas (tiempo positivo y real)
+    soluciones_validas = [sol for sol in soluciones if sol.is_real and sol > 0]
+    return soluciones_validas[0] if soluciones_validas else None
+
+# Comparar los costos en el tiempo calculado
+def comparar_costos(limite):
+    t_max = calcular_tiempo_limite(limite)
+    if t_max:
+        ci = costo_interprase(t_max)
+        cs = costo_soluciones(t_max)
+        return t_max, ci, cs
+    else:
+        return None, None, None
+# -------------------------------------------------------------------------------------
