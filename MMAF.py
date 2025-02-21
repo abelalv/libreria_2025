@@ -3,6 +3,7 @@
 #LIBRERIAS: 
 import math
 from sympy import symbols, Eq, solve
+from ipywidgets import interact, FloatSlider
 
 # Función Actividad 1 (Población de Ardillas)
 # -------------------------------------------------------------------------------------
@@ -83,52 +84,45 @@ def analizar_diferencia_cuadrados(radio_exterior, radio_interior, altura):
 #Funciones Actividad 3 (Pepito Perez)
 # -------------------------------------------------------------------------------------
 # Función para el costo cuadrático de Pepito_Perez
-def costo_pepito_perez(t):
-    return -2000 * t**2 + 20000 * t + 800000
+def calcular_costos(t_seleccionado):
+    # Definir las funciones de costo
+    valor_interprase = 950000 + 5500 * t_seleccionado + 30000 + 25 * t_seleccionado
+    valor_soluciones = 1100000 + 150 * t_seleccionado + 50000 - 10 * t_seleccionado
+    valor_pepito     = -2000 * t_seleccionado**2 + 20000 * t_seleccionado + 1130000
+    
+    # Imprimimos los valores en la consola
+    print(f"Para t = {t_seleccionado}:")
+    print(f"  - Interprase         : ${valor_interprase:,.2f}")
+    print(f"  - Soluciones Express : ${valor_soluciones:,.2f}")
+    print(f"  - Pepito             : ${valor_pepito:,.2f}")
 
-# Función para el costo lineal de Interprase
-def costo_interprase(t):
-    return 850000 + 22000 * t
-
-# Función para el costo lineal de Soluciones Express
-def costo_soluciones(t):
-    return 1150000 + 420 * t
-
-# Resolver la ecuación cuadrática de Pepito_Perez para encontrar el tiempo
-def calcular_tiempo_limite(limite):
-    t = symbols('t', real=True)
-    ecuacion = Eq(costo_pepito_perez(t), limite)
-    soluciones = solve(ecuacion, t)
-    # Filtrar soluciones válidas (tiempo positivo y real)
-    soluciones_validas = [sol for sol in soluciones if sol.is_real and sol > 0]
-    return soluciones_validas[0] if soluciones_validas else None
-
-# Comparar los costos en el tiempo calculado
-def comparar_costos(limite):
-    t_max = calcular_tiempo_limite(limite)
-    if t_max:
-        ci = costo_interprase(t_max)
-        cs = costo_soluciones(t_max)
-        return t_max, ci, cs
-    else:
-        return None, None, None
+    return interact(
+            calcular_costos, 
+            t_seleccionado=FloatSlider(
+            value=0,      # Valor inicial del slider
+            min=0,        # Valor mínimo
+            max=20,       # Valor máximo
+            step=0.5,     # Incremento
+            description='Tiempo (t)'  # Etiqueta del slider
+            )
+    )
 # -------------------------------------------------------------------------------------
 
 # Funciones auxiliares para Taller 3 y Python 3
 # -------------------------------------------------------------------------------------
 # Función para calcular el discriminante
-def Calcular_Discriminante(a, b, c):
+def calcular_discriminante(a, b, c):
   discriminante = b**2 - 4*a*c
   print("discriminante: ", discriminante)
   return discriminante
 
 # Función para resolver ecuaciones cuadráticas
-def Resolver_Ecuacion_Cuadratica(a, b, c):
+def resolver_ecuacion_cuadratica(a, b, c):
   discriminante = Calcular_Discriminante(a,b,c)
   #discriminante = b*2 - 4 a* c
-
   x1 = (-b + math.sqrt(discriminante)) / (2*a)
   x2 = (-b - math.sqrt(discriminante)) / (2*a)
 
   print("las soluciones son: ", x1, "y", x2)
   return x1, x2
+#--------------------------------------------------------------------------------------
