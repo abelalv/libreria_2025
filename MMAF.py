@@ -113,3 +113,22 @@ def comparar_costos(limite):
     else:
         return None, None, None
 # -------------------------------------------------------------------------------------
+
+# Funciones auxiliares para Taller 3 y Python 3
+# -------------------------------------------------------------------------------------
+# Función para calcular el discriminante
+def Calcular_Discriminante(a, b, c):
+  discriminante = b**2 - 4*a*c
+  print("discriminante: ", discriminante)
+  return discriminante
+
+# Función para resolver ecuaciones cuadráticas
+def Resolver_Ecuacion_Cuadratica(a, b, c):
+  discriminante = Calcular_Discriminante(a,b,c)
+  #discriminante = b*2 - 4 a* c
+
+  x1 = (-b + math.sqrt(discriminante)) / (2*a)
+  x2 = (-b - math.sqrt(discriminante)) / (2*a)
+
+  print("las soluciones son: ", x1, "y", x2)
+  return x1, x2
