@@ -83,28 +83,40 @@ def analizar_diferencia_cuadrados(radio_exterior, radio_interior, altura):
 
 #Funciones Actividad 3 (Pepito Perez)
 # -------------------------------------------------------------------------------------
-# Función para el costo cuadrático de Pepito_Perez
-def calcular_costos(t_seleccionado):
+# Función para obtener los costos asociados a las tres propuestas
+def obtener_costos(t_seleccionado):
     # Definir las funciones de costo
     valor_interprase = 950000 + 5500 * t_seleccionado + 30000 + 25 * t_seleccionado
     valor_soluciones = 1100000 + 150 * t_seleccionado + 50000 - 10 * t_seleccionado
     valor_pepito     = -2000 * t_seleccionado**2 + 20000 * t_seleccionado + 1130000
     
-    # Imprimimos los valores en la consola
+    return valor_interprase, valor_soluciones, valor_pepito
+
+# Función para mostrar los costos asociados a las tres propuestas
+def mostrar_costos(t_seleccionado):
+    # Obtener los costos
+    valor_interprase, valor_soluciones, valor_pepito = obtener_costos(t_seleccionado)
+    
+    # Imprimir los valores en la consola
     print(f"Para t = {t_seleccionado}:")
     print(f"  - Interprase         : ${valor_interprase:,.2f}")
     print(f"  - Soluciones Express : ${valor_soluciones:,.2f}")
     print(f"  - Pepito             : ${valor_pepito:,.2f}")
 
+    return None
+
+
+# Función para el slider
+def interactuar_con_slider():
     return interact(
-            calcular_costos, 
-            t_seleccionado=FloatSlider(
+        mostrar_costos, 
+        t_seleccionado=FloatSlider(
             value=0,      # Valor inicial del slider
             min=0,        # Valor mínimo
             max=20,       # Valor máximo
             step=0.5,     # Incremento
             description='Tiempo (t)'  # Etiqueta del slider
-            )
+        )
     )
 # -------------------------------------------------------------------------------------
 
@@ -118,7 +130,7 @@ def calcular_discriminante(a, b, c):
 
 # Función para resolver ecuaciones cuadráticas
 def resolver_ecuacion_cuadratica(a, b, c):
-  discriminante = Calcular_Discriminante(a,b,c)
+  discriminante = calcular_discriminante(a,b,c)
   #discriminante = b*2 - 4 a* c
   x1 = (-b + math.sqrt(discriminante)) / (2*a)
   x2 = (-b - math.sqrt(discriminante)) / (2*a)
