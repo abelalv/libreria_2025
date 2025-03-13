@@ -2,6 +2,7 @@
 
 #LIBRERIAS: 
 import math
+import numpy as np
 from sympy import symbols, Eq, solve
 from ipywidgets import interact, FloatSlider
 
