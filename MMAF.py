@@ -5,6 +5,8 @@ import math
 import numpy as np
 from sympy import symbols, Eq, solve
 from ipywidgets import interact, FloatSlider
+import matplotlib.pyplot as plt
+
 
 # Función Actividad 1 (Población de Ardillas)
 # -------------------------------------------------------------------------------------
