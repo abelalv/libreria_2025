@@ -284,8 +284,8 @@ def interactuar(d_objetivo, C_g):
     else:
         print("No se encontraron intersecciones en el dominio analizado.")
 
-    plt.xlabel('x (m)')
-    plt.ylabel('d(x, C_g) (cm)')
+    plt.xlabel('Posición a lo largo de la viga (m)')
+    plt.ylabel('Deflexión (cm)')
     plt.title('Flexión de la viga en voladizo')
     plt.legend()
     plt.grid(True)
@@ -298,7 +298,7 @@ def interactuar(d_objetivo, C_g):
         print('Intersección en x = ' + ", ".join(f"{xi:.3f}" for xi in intersecciones) + " m.")
 
 def visualizar_limites():
-    C_g_slider = FloatSlider(min=0.1, max=2, step=0.05, value=1.0, description='C_g')
+    C_g_slider = FloatSlider(min=0, max=1, step=0.05, value=0.5, description='C_g')
     d_objetivo_slider = FloatSlider(min=-C_g_slider.value, max=0, step=0.025, value=-0.125, description='d_objetivo')
 
     def actualizar_d_objetivo_range(change):
