@@ -6,6 +6,7 @@ import numpy as np
 from sympy import symbols, Eq, solve
 from ipywidgets import interact, FloatSlider
 import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
 
 
 # Función Actividad 1 (Población de Ardillas)
@@ -205,3 +206,51 @@ def interactuar_con_desgaste():
         mostrar_desgaste, 
         D_c=FloatSlider(value=5, min=0, max=10, step=0.1, description='Capacidad Crítica D_c')
     )
+
+# Funciones Actividad 5 (Deflexión de una viga en voladizo)
+# -------------------------------------------------------------------------------------
+def deflexion_viga(x, t):
+    """
+    Calcula la deflexión de la viga para un nivel de carga proporcional t,
+    usando la función:
+        d(x) = -t * (1/16000) * (60*x**2 - x**3)
+    """
+    return -t * (1/16000) * (60*x**2 - x**3)
+
+# Función para mostrar la animación de la deflexión de la viga
+def animar_deflexion_viga():
+    x = np.linspace(0, 20, 400)
+
+    fig, ax = plt.subplots(figsize=(8, 4))
+    ax.set_xlim(0, 20)
+    y_min = deflexion_viga(20, 1)
+    ax.set_ylim(y_min * 1.2, 0)
+
+    line, = ax.plot([], [], lw=3, color='blue')
+
+    def init():
+        line.set_data([], [])
+        ax.set_xlabel("Posición a lo largo de la viga (m)")
+        ax.set_ylabel("Deflexión (cm)")
+        ax.set_title("Animación de deflexión en viga en voladizo")
+        return line,
+
+    def update(frame):
+        t = frame  # t varía de 0 a 1 (0% a 100% de carga)
+        y = deflexion_viga(x, t)
+        line.set_data(x, y)
+        ax.set_title(f"Deflexión de la viga (Carga aplicada: {t*100:.1f}%)")
+        return line,
+
+    frames = np.linspace(0, 1, 100)
+    anim = FuncAnimation(fig, update, frames=frames, init_func=init, blit=True, repeat=True)
+
+    anim.save("viga_animation.gif", writer="pillow", fps=30)
+
+
+
+
+
+
+
+
