@@ -4,10 +4,11 @@
 import math
 import numpy as np
 from sympy import symbols, Eq, solve
-from ipywidgets import interact, FloatSlider
+from ipywidgets import interact, FloatSlider, interactive_output, VBox, FloatSlider
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
-
+from scipy.optimize import fsolve
+from IPython.display import display
 
 # Función Actividad 1 (Población de Ardillas)
 # -------------------------------------------------------------------------------------
@@ -246,6 +247,73 @@ def animar_deflexion_viga():
     anim = FuncAnimation(fig, update, frames=frames, init_func=init, blit=True, repeat=True)
 
     anim.save("viga_animation.gif", writer="pillow", fps=30)
+
+# Funciones para encontrar el intervalo seguro 
+
+# Función de deflexión: d(x, C_g) en cm, x en m
+def d(x, C_g):
+    return -C_g * (60 * x**2 - x**3) / 16000
+
+# Función para encontrar intersecciones: se busca x tal que d(x, C_g) = d_objetivo
+def encontrar_intersecciones(d_objetivo, C_g):
+    x_dom = np.linspace(0, 20, 400)
+    dif = d(x_dom, C_g) - d_objetivo
+    indices = np.where(np.diff(np.sign(dif)))[0]
+    soluciones = []
+    for i in indices:
+        sol = fsolve(lambda x: d(x, C_g) - d_objetivo, x_dom[i])
+        soluciones.append(sol[0])
+    return sorted(soluciones)
+
+# Función que grafica la curva, la línea horizontal en d_objetivo y la vertical en el punto de intersección
+def interactuar(d_objetivo, C_g):
+    intersecciones = encontrar_intersecciones(d_objetivo, C_g)
+    
+    x = np.linspace(0, 20, 400)
+    y = d(x, C_g)
+    
+    plt.figure(figsize=(10, 5))
+    plt.plot(x, y, label=r'$d(x,C_g)=-C_g\frac{60x^2-x^3}{16000}$')
+    plt.axhline(d_objetivo, color='red', linestyle='--', label=f'd_objetivo = {d_objetivo:.3f} cm')
+    
+    if intersecciones:
+        for x_int in intersecciones:
+            y_int = d(x_int, C_g)
+            plt.axvline(x_int, color='green', linestyle='--', label=f'x = {x_int:.3f} m')
+            plt.scatter(x_int, y_int, color='blue', s=100, zorder=5)
+    else:
+        print("No se encontraron intersecciones en el dominio analizado.")
+
+    plt.xlabel('x (m)')
+    plt.ylabel('d(x, C_g) (cm)')
+    plt.title('Flexión de la viga en voladizo')
+    plt.legend()
+    plt.grid(True)
+    plt.xlim(0, 20)
+    plt.ylim(min(y) - 0.1, max(y) + 0.1)
+    plt.show()
+
+    print(f'Para d_objetivo = {d_objetivo:.3f} cm y C_g = {C_g:.2f}.')
+    if intersecciones:
+        print('Intersección en x = ' + ", ".join(f"{xi:.3f}" for xi in intersecciones) + " m.")
+
+def visualizar_limites():
+    C_g_slider = FloatSlider(min=0.1, max=2, step=0.05, value=1.0, description='C_g')
+    d_objetivo_slider = FloatSlider(min=-C_g_slider.value, max=0, step=0.025, value=-0.125, description='d_objetivo')
+
+    def actualizar_d_objetivo_range(change):
+        C_g_val = change['new']
+        d_objetivo_slider.min = -C_g_val
+        d_objetivo_slider.max = 0
+        if d_objetivo_slider.value < -C_g_val or d_objetivo_slider.value > 0:
+            d_objetivo_slider.value = -min(0.125, C_g_val)
+
+    C_g_slider.observe(actualizar_d_objetivo_range, names='value')
+
+    out = interactive_output(interactuar, {'d_objetivo': d_objetivo_slider, 'C_g': C_g_slider})
+    ui = VBox([C_g_slider, d_objetivo_slider])
+    display(ui, out)
+
 
 
 
