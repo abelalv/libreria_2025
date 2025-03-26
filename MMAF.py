@@ -264,8 +264,8 @@ def encontrar_intersecciones(d_objetivo, C_g):
         soluciones.append(sol[0])
     return sorted(soluciones)
 
-def interactuar(C_g):
-    d_lim = 0.1  # Deflexión máxima fija en 0.1 cm
+def interactuar(C_g):  
+    d_lim = 0.1  
     intersecciones = encontrar_intersecciones(d_lim, C_g)
     x = np.linspace(0, 20, 400)
     y = d(x, C_g)
@@ -300,4 +300,5 @@ def visualizar_limites():
     out = interactive_output(interactuar, {'C_g': C_g_slider})
     ui = VBox([C_g_slider])
     display(ui, out)
+
 
