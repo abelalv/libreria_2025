@@ -264,14 +264,15 @@ def encontrar_intersecciones(d_objetivo, C_g):
         soluciones.append(sol[0])
     return sorted(soluciones)
 
-def interactuar(d_objetivo, C_g):
-    intersecciones = encontrar_intersecciones(d_objetivo, C_g)
+def interactuar(C_g):
+    d_lim = 0.1  # Deflexión máxima fija en 0.1 cm
+    intersecciones = encontrar_intersecciones(d_lim, C_g)
     x = np.linspace(0, 20, 400)
     y = d(x, C_g)
 
     plt.figure(figsize=(10, 5))
     plt.plot(x, y, label=r'$d(x,C_g)=\frac{C_g}{16000}(60x^2-x^3)$')
-    plt.axhline(0.1, color='red', linestyle='--', label='dlim = 0.1 cm')
+    plt.axhline(d_lim, color='red', linestyle='--', label='dlim = 0.1 cm')
 
     if intersecciones:
         for x_int in intersecciones:
@@ -290,25 +291,13 @@ def interactuar(d_objetivo, C_g):
     plt.ylim(min(y) - 0.1, max(y) + 0.1)
     plt.show()
 
-    print(f'Para d_objetivo = {d_objetivo:.3f} cm y C_g = {C_g:.2f}.')
+    print(f'Para d_objetivo = {d_lim:.3f} cm y C_g = {C_g:.2f}.')
     if intersecciones:
         print('Intersección en x = ' + ", ".join(f"{xi:.3f}" for xi in intersecciones) + " m.")
 
 def visualizar_limites():
     C_g_slider = FloatSlider(min=0, max=1, step=0.05, value=1.0, description='C_g')
-    d_objetivo_slider = FloatSlider(min=-0.1, max=0, step=0.01, value=-0.05, description='d_objetivo')
-
-    out = interactive_output(interactuar, {'d_objetivo': d_objetivo_slider, 'C_g': C_g_slider})
-    ui = VBox([C_g_slider, d_objetivo_slider])
+    out = interactive_output(interactuar, {'C_g': C_g_slider})
+    ui = VBox([C_g_slider])
     display(ui, out)
-
-
-
-
-
-
-
-
-
-
 
