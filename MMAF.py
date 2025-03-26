@@ -249,12 +249,11 @@ def animar_deflexion_viga():
     anim.save("viga_animation.gif", writer="pillow", fps=30)
 
 # Funciones para encontrar el intervalo seguro 
-
+# --------------------------------------------------------------------------------------------
 # Función de deflexión: d(x, C_g) en cm, x en m
 def d(x, C_g):
     return (C_g / 16000) * (60 * x**2 - x**3)
 
-# Función para encontrar intersecciones: se busca x tal que d(x, C_g) = d_objetivo
 def encontrar_intersecciones(d_objetivo, C_g):
     x_dom = np.linspace(0, 20, 400)
     dif = d(x_dom, C_g) - d_objetivo
@@ -265,16 +264,14 @@ def encontrar_intersecciones(d_objetivo, C_g):
         soluciones.append(sol[0])
     return sorted(soluciones)
 
-# Función que grafica la curva, la línea horizontal en d_objetivo y la vertical en el punto de intersección
 def interactuar(d_objetivo, C_g):
     intersecciones = encontrar_intersecciones(d_objetivo, C_g)
-    
     x = np.linspace(0, 20, 400)
     y = d(x, C_g)
 
     plt.figure(figsize=(10, 5))
     plt.plot(x, y, label=r'$d(x,C_g)=\frac{C_g}{16000}(60x^2-x^3)$')
-    plt.axhline(d_objetivo, color='red', linestyle='--', label=f'd_objetivo = {d_objetivo:.3f} cm')
+    plt.axhline(0.1, color='red', linestyle='--', label='dlim = 0.1 cm')
 
     if intersecciones:
         for x_int in intersecciones:
@@ -297,7 +294,6 @@ def interactuar(d_objetivo, C_g):
     if intersecciones:
         print('Intersección en x = ' + ", ".join(f"{xi:.3f}" for xi in intersecciones) + " m.")
 
-# Visualización interactiva
 def visualizar_limites():
     C_g_slider = FloatSlider(min=0, max=1, step=0.05, value=1.0, description='C_g')
     d_objetivo_slider = FloatSlider(min=-0.1, max=0, step=0.01, value=-0.05, description='d_objetivo')
@@ -305,6 +301,7 @@ def visualizar_limites():
     out = interactive_output(interactuar, {'d_objetivo': d_objetivo_slider, 'C_g': C_g_slider})
     ui = VBox([C_g_slider, d_objetivo_slider])
     display(ui, out)
+
 
 
 
