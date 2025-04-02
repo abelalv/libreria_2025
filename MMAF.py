@@ -341,8 +341,8 @@ def visualizar_crecimiento_cancer():
     r_slider = FloatSlider(value=0.2, min=0.05, max=1.0, step=0.05, description="Tasa de crecimiento (r)")
     Tf_slider = IntSlider(value=30, min=10, max=60, step=5, description="Tiempo final (Tf)")
     
-    ui = widgets.VBox([Td_slider, N0_slider, K_slider, A_slider, r_slider, Tf_slider])
-    out = widgets.interactive_output(plot_growth, {
+    ui = VBox([Td_slider, N0_slider, K_slider, A_slider, r_slider, Tf_slider])
+    out = interactive_output(plot_growth, {
         'Td': Td_slider, 'N0': N0_slider, 'K': K_slider,
         'A': A_slider, 'r': r_slider, 'Tf': Tf_slider
     })
