@@ -4,7 +4,7 @@
 import math
 import numpy as np
 from sympy import symbols, Eq, solve
-from ipywidgets import interact, FloatSlider, IntSlider, interactive_output, VBox,
+from ipywidgets import interact, FloatSlider, IntSlider, interactive_output, VBox
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from scipy.optimize import fsolve
