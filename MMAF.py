@@ -4,11 +4,12 @@
 import math
 import numpy as np
 from sympy import symbols, Eq, solve
-from ipywidgets import interact, FloatSlider, interactive_output, VBox, FloatSlider
+from ipywidgets import interact, FloatSlider, IntSlider, interactive_output, VBox,
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from scipy.optimize import fsolve
 from IPython.display import display
+
 # Función Actividad 1 (Población de Ardillas)
 # -------------------------------------------------------------------------------------
 def calcular_poblacion(juveniles_iniciales, adultas_iniciales, tasa_reproduccion, tasa_conversion, tasa_supervivencia, epocas):
@@ -333,12 +334,12 @@ def plot_growth(Td=3, N0=100, K=1000, A=9, r=0.2, Tf=30):
 
 def visualizar_crecimiento_cancer():
     # Configura los controles y permite visualizar la simulación del crecimiento celular.
-    Td_slider = widgets.FloatSlider(value=3, min=1, max=10, step=0.5, description="Tiempo de duplicación (Td)")
-    N0_slider = widgets.IntSlider(value=100, min=50, max=500, step=10, description="Células Iniciales (N0)")
-    K_slider = widgets.IntSlider(value=1000, min=500, max=2000, step=100, description="Carga máxima (K)")
-    A_slider = widgets.FloatSlider(value=9, min=1, max=20, step=1, description="Constante (A)")
-    r_slider = widgets.FloatSlider(value=0.2, min=0.05, max=1.0, step=0.05, description="Tasa de crecimiento (r)")
-    Tf_slider = widgets.IntSlider(value=30, min=10, max=60, step=5, description="Tiempo final (Tf)")
+    Td_slider = FloatSlider(value=3, min=1, max=10, step=0.5, description="Tiempo de duplicación (Td)")
+    N0_slider = IntSlider(value=100, min=50, max=500, step=10, description="Células Iniciales (N0)")
+    K_slider = IntSlider(value=1000, min=500, max=2000, step=100, description="Carga máxima (K)")
+    A_slider = FloatSlider(value=9, min=1, max=20, step=1, description="Constante (A)")
+    r_slider = FloatSlider(value=0.2, min=0.05, max=1.0, step=0.05, description="Tasa de crecimiento (r)")
+    Tf_slider = IntSlider(value=30, min=10, max=60, step=5, description="Tiempo final (Tf)")
     
     ui = widgets.VBox([Td_slider, N0_slider, K_slider, A_slider, r_slider, Tf_slider])
     out = widgets.interactive_output(plot_growth, {
