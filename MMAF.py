@@ -9,7 +9,6 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from scipy.optimize import fsolve
 from IPython.display import display
-
 # Función Actividad 1 (Población de Ardillas)
 # -------------------------------------------------------------------------------------
 def calcular_poblacion(juveniles_iniciales, adultas_iniciales, tasa_reproduccion, tasa_conversion, tasa_supervivencia, epocas):
@@ -302,3 +301,49 @@ def visualizar_limites():
     display(ui, out)
 
 
+# Funciones Actividad 6 (Crecimiento Celulas Cancerigenas)
+# ------------------------------------------------------------------------------------
+def modelo_exponencial(t, N0, doubling_time):
+    # Calcula el crecimiento exponencial.
+    return N0 * 2**(t/doubling_time)
+
+def modelo_logistico(t, K, A, r):
+    # Calcula el crecimiento logístico.
+    return K / (1 + A * np.exp(-r * t))
+
+def plot_growth(Td=3, N0=100, K=1000, A=9, r=0.2, Tf=30):
+    # Genera la gráfica del crecimiento celular con y sin tratamiento.
+    t = np.linspace(0, Tf, 10*Tf)
+    N_exponencial = modelo_exponencial(t, N0, Td)
+    N_logistico = modelo_logistico(t, K, A, r)
+    
+    fig, ax = plt.subplots(figsize=(10,6))
+    ax.plot(t, N_exponencial, label="Sin tratamiento (Exponencial)")
+    ax.plot(t, N_logistico, label="Con tratamiento (Logístico)")
+    ax.axhline(K/2, color='gray', linestyle='--', label="Carga máxima/2")
+    
+    ax.set_xlabel("Tiempo (días)")
+    ax.set_ylabel("Número de células")
+    ax.set_title("Simulación del Crecimiento de Células Cancerígenas")
+    ax.legend()
+    ax.set_ylim(0, K + 100)
+    ax.grid(True)
+    
+    plt.show()
+
+def visualizar_crecimiento_cancer():
+    # Configura los controles y permite visualizar la simulación del crecimiento celular.
+    Td_slider = widgets.FloatSlider(value=3, min=1, max=10, step=0.5, description="Tiempo de duplicación (Td)")
+    N0_slider = widgets.IntSlider(value=100, min=50, max=500, step=10, description="Células Iniciales (N0)")
+    K_slider = widgets.IntSlider(value=1000, min=500, max=2000, step=100, description="Carga máxima (K)")
+    A_slider = widgets.FloatSlider(value=9, min=1, max=20, step=1, description="Constante (A)")
+    r_slider = widgets.FloatSlider(value=0.2, min=0.05, max=1.0, step=0.05, description="Tasa de crecimiento (r)")
+    Tf_slider = widgets.IntSlider(value=30, min=10, max=60, step=5, description="Tiempo final (Tf)")
+    
+    ui = widgets.VBox([Td_slider, N0_slider, K_slider, A_slider, r_slider, Tf_slider])
+    out = widgets.interactive_output(plot_growth, {
+        'Td': Td_slider, 'N0': N0_slider, 'K': K_slider,
+        'A': A_slider, 'r': r_slider, 'Tf': Tf_slider
+    })
+    
+    display(ui, out)
