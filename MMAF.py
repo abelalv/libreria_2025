@@ -321,25 +321,26 @@ def plot_growth(Td=3, N0=100, K=1000, A=9, r=0.2, Tf=30):
     fig, ax = plt.subplots(figsize=(10,6))
     ax.plot(t, N_exponencial, label="Sin tratamiento (Exponencial)")
     ax.plot(t, N_logistico, label="Con tratamiento (Logístico)")
-    ax.axhline(K/2, color='gray', linestyle='--', label="Carga máxima/2")
+    ax.axhline(K, color='gray', linestyle='--', label="Carga máxima")
     
     ax.set_xlabel("Tiempo (días)")
     ax.set_ylabel("Número de células")
     ax.set_title("Simulación del Crecimiento de Células Cancerígenas")
     ax.legend()
-    ax.set_ylim(0, K + 100)
+    ax.set_xlim(0, Tf + 2)
+    ax.set_ylim(0, K + 200)
     ax.grid(True)
     
     plt.show()
 
 def visualizar_crecimiento_cancer():
     # Configura los controles y permite visualizar la simulación del crecimiento celular.
-    Td_slider = FloatSlider(value=3, min=1, max=10, step=0.5, description="Tiempo de duplicación (Td)")
-    N0_slider = IntSlider(value=100, min=50, max=500, step=10, description="Células Iniciales (N0)")
-    K_slider = IntSlider(value=1000, min=500, max=2000, step=100, description="Carga máxima (K)")
-    A_slider = FloatSlider(value=9, min=1, max=20, step=1, description="Constante (A)")
-    r_slider = FloatSlider(value=0.2, min=0.05, max=1.0, step=0.05, description="Tasa de crecimiento (r)")
-    Tf_slider = IntSlider(value=30, min=10, max=60, step=5, description="Tiempo final (Tf)")
+    Td_slider = FloatSlider(value=3, min=1, max=10, step=0.5, description="Td:")
+    N0_slider = IntSlider(value=100, min=50, max=500, step=10, description="N0:")
+    K_slider = IntSlider(value=1000, min=500, max=2000, step=100, description="K:")
+    A_slider = FloatSlider(value=9, min=1, max=20, step=1, description="A:")
+    r_slider = FloatSlider(value=0.2, min=0.05, max=1.0, step=0.05, description="r:")
+    Tf_slider = IntSlider(value=30, min=10, max=60, step=5, description="Tf:")
     
     ui = VBox([Td_slider, N0_slider, K_slider, A_slider, r_slider, Tf_slider])
     out = interactive_output(plot_growth, {
