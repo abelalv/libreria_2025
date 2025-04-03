@@ -321,7 +321,7 @@ def plot_growth(Td=3, N0=100, K=1000, A=9, r=0.2, Tf=30):
     fig, ax = plt.subplots(figsize=(10,6))
     ax.plot(t, N_exponencial, label="Sin tratamiento (Exponencial)")
     ax.plot(t, N_logistico, label="Con tratamiento (Logístico)")
-    ax.axhline(K, color='gray', linestyle='--', label="Carga máxima")
+    ax.axhline(K/2, color='gray', linestyle='--', label="Carga máxima/2")
     
     ax.set_xlabel("Tiempo (días)")
     ax.set_ylabel("Número de células")
