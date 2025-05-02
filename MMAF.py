@@ -1,14 +1,15 @@
 # En este archivo estará la librería de funciones que se utilizarán en el programa principal
 
 #LIBRERIAS: 
-import math
 import numpy as np
+from scipy.optimize import fsolve
 from sympy import symbols, Eq, solve
-from ipywidgets import interact, FloatSlider, IntSlider, interactive_output, VBox
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
-from scipy.optimize import fsolve
-from IPython.display import display
+from IPython.display import display, clear_output
+import ipywidgets as widgets
+from ipywidgets import interact, FloatSlider, IntSlider, interactive_output, VBox
+import math
 
 # Función Actividad 1 (Población de Ardillas)
 # -------------------------------------------------------------------------------------
@@ -353,18 +354,7 @@ def visualizar_crecimiento_cancer():
 
 # Funciones Actividad 7 (Modelo de crecimiento de la población)
 # ------------------------------------------------------------------------------------
-import numpy as np
-import matplotlib.pyplot as plt
-import ipywidgets as widgets
-from IPython.display import display, clear_output
-
- 
-
-import numpy as np
-import matplotlib.pyplot as plt
-from ipywidgets import interact, FloatSlider
-import ipywidgets as widgets
-
+'''
 # Definir la función seno con desfase y la función seno original
 def plot_sine(desfase=0):
     x = np.linspace(-2 * np.pi, 2 * np.pi, 1000)
@@ -399,11 +389,7 @@ def plot_sine(desfase=0):
     plt.grid(True)
     plt.legend()
     plt.show()
-
-
-import numpy as np
-import matplotlib.pyplot as plt
-from ipywidgets import interact
+'''
 
 # Función para graficar la onda seno con amplitud, frecuencia, desfase y término constante
 def graficar_seno(amplitud, frecuencia, desfase, constante):
@@ -792,11 +778,6 @@ def plot_two_triangles(angle_radians, hypotenuse1, hypotenuse2):
     ax[1].text(1.11, 0.6, f"= {sin_cociente2:.2f}", fontsize=14, color='black')
     
     plt.show()
-
-
-import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
 
 # Función principal para generar la animación de "Los Pollitos"
 def los_pollitos_animation(rate=22050, duration=0.5, output_file='los_pollitos_animation.mp4'):
