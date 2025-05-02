@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from IPython.display import display, clear_output
 import ipywidgets as widgets
-from ipywidgets import interact, FloatSlider, IntSlider, interactive_output, VBox
+from ipywidgets import interact, FloatSlider, IntSlider, interactive_output, VBox, FloatText, HBox
 import math
 
 # Función Actividad 1 (Población de Ardillas)
@@ -352,8 +352,84 @@ def visualizar_crecimiento_cancer():
     display(ui, out)
 
 
-# Funciones Actividad 7 (Modelo de crecimiento de la población)
+# Funciones Actividad 7 (Modelo de conexiones satelitales)
 # ------------------------------------------------------------------------------------
+def push_radially(pt, factor=1.22):
+    # escala radial
+    return np.array(pt) * factor
+
+def surface_coverage_distance(h):
+    # distancia superficial lineal
+    R = 6378  # km
+    return np.sqrt((R + h)**2 - R**2)
+
+def required_threshold(D, m):
+    # umbral requerido
+    return D/2 + m
+
+def view_angle(h):
+    # ángulo de visión
+    R = 6378
+    return np.arccos(R / (R + h))
+
+def plot_satellite(D, h, m):
+    # dibuja Tierra, ciudades y cobertura
+    R = 6378
+    theta0 = 7.6 * np.pi / 180
+    d = surface_coverage_distance(h)
+    th_view = view_angle(h)
+
+    fig, ax = plt.subplots()
+    ax.set_aspect('equal')
+
+    # tierra
+    ax.add_patch(plt.Circle((0, 0), R, color='lightblue', alpha=0.4))
+
+    # ciudades
+    half = theta0 / 2
+    Q = [R * np.cos(half), R * np.sin(half)]
+    M = [R * np.cos(-half), R * np.sin(-half)]
+    ax.plot(*Q, 'ko'); ax.text(*push_radially(Q), 'Quibdó')
+    ax.plot(*M, 'ko'); ax.text(*push_radially(M), 'Mitú')
+
+    # satélite
+    sat = [R + h, 0]
+    ax.plot(*sat, 'ro'); ax.text(*push_radially(sat, 1.03), 'SAT')
+
+    # altura
+    ax.text(0.98, 0.95, f'h={h:.0f} km', transform=ax.transAxes,
+            ha='right', va='top', bbox=dict(facecolor='white', alpha=0.7))
+
+    # cobertura
+    phi = np.linspace(-th_view, th_view, 400)
+    ax.plot(R * np.cos(phi), R * np.sin(phi), 'r--')
+
+    # límites
+    mrg = 2200
+    ax.set_xlim(-R - mrg, R + mrg); ax.set_ylim(-R - mrg, R + mrg)
+    ax.set_xlabel('km'); ax.set_ylabel('km')
+    ax.set_title(f'd={d:.0f} km (req ≥ {required_threshold(D, m):.0f})')
+    ax.grid(True)
+    plt.show()
+
+def create_widgets():
+    # widgets
+    R = 6378
+    theta0 = 7.6 * np.pi / 180
+    D_pred = R * theta0
+    D_text = FloatText(value=np.round(D_pred, 2), description='D (km):')
+    h_slider = FloatSlider(value=500, min=100, max=1200, step=10, description='h (km):')
+    m_slider = FloatSlider(value=0, min=0, max=300, step=10, description='margen (km):')
+    return D_text, h_slider, m_slider
+
+def build_interface_satelite():
+    # interfaz interactiva
+    D_text, h_slider, m_slider = create_widgets()
+    ui = VBox([HBox([D_text]), h_slider, m_slider])
+    out = interactive_output(plot_satellite,
+                             {'D': D_text, 'h': h_slider, 'm': m_slider})
+    display(ui, out)
+
 '''
 # Definir la función seno con desfase y la función seno original
 def plot_sine(desfase=0):
