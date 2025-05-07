@@ -436,39 +436,22 @@ def build_interface_satelite():
 
 # Definir la función seno con desfase y la función seno original
 def plot_sine(desfase=0):
-    x = np.linspace(-2 * np.pi, 2 * np.pi, 1000)
-    
-    # Función seno con desfase
-    y_desfase = np.sin(x + desfase)
-    
-    # Función seno original (sin desfase)
-    y_original = np.sin(x)
-    
-    plt.figure(figsize=(8, 4))
-    
-    # Graficar seno original en gris
-    plt.plot(x, y_original, label=r'$y = \sin(x)$', color='gray', linestyle='--', linewidth=2)
-    
-    # Graficar seno con desfase
-    plt.plot(x, y_desfase, label=fr'$y = \sin(x + {desfase:.2f})$', color='b', linewidth=2)
-    
-    plt.axhline(0, color='black',linewidth=1)
-    plt.axvline(0, color='black',linewidth=1)
-    
-    plt.title('Simulación de la Función Seno con Desfase', fontsize=14)
-    plt.xlabel('x', fontsize=12)
-    plt.ylabel('y', fontsize=12)
-    
-    plt.xlim(-2 * np.pi, 2 * np.pi)
-    plt.ylim(-1.5, 1.5)
-    
-    plt.xticks([-2 * np.pi, -np.pi, 0, np.pi, 2 * np.pi], 
-               [r'$-2\pi$', r'$-\pi$', '0', r'$\pi$', r'$2\pi$'])
-    
-    plt.grid(True)
-    plt.legend()
-    plt.show()
+    # Dominio de 0 a 2π para un ciclo completo
+    x = np.linspace(0, 2 * np.pi, 500)
+    y = np.sin(x + desfase)
 
+    plt.figure(figsize=(8, 4))
+    plt.plot(x, y, linewidth=2)
+    plt.axhline(0, color='black', lw=1)
+    plt.axvline(0, color='black', lw=1)
+    plt.ylim(-1.5, 1.5)
+    plt.title(fr'$y = \sin(x + {desfase:.2f})$')
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.xticks([0, np.pi/2, np.pi, 3*np.pi/2, 2*np.pi],
+               ['0', r'$\frac{\pi}{2}$', r'$\pi$', r'$\frac{3\pi}{2}$', r'$2\pi$'])
+    plt.grid(True)
+    plt.show()
 
 # Función para graficar la onda seno con amplitud, frecuencia, desfase y término constante
 def graficar_seno(amplitud, frecuencia, desfase, constante):
