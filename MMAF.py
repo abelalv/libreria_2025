@@ -430,7 +430,10 @@ def build_interface_satelite():
                              {'D': D_text, 'h': h_slider, 'm': m_slider})
     display(ui, out)
 
-'''
+# -------------------------------------------------------------------------------------
+# Funciones Herramientas Computacionales 7
+# -------------------------------------------------------------------------------------
+
 # Definir la función seno con desfase y la función seno original
 def plot_sine(desfase=0):
     x = np.linspace(-2 * np.pi, 2 * np.pi, 1000)
@@ -465,7 +468,7 @@ def plot_sine(desfase=0):
     plt.grid(True)
     plt.legend()
     plt.show()
-'''
+
 
 # Función para graficar la onda seno con amplitud, frecuencia, desfase y término constante
 def graficar_seno(amplitud, frecuencia, desfase, constante):
