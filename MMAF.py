@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from IPython.display import display, clear_output
 import ipywidgets as widgets
-from ipywidgets import interact, FloatSlider, IntSlider, interactive_output, VBox, FloatText, HBox
+from ipywidgets import interact, FloatSlider, IntSlider, interactive_output, VBox, FloatText, HBox, Text
 import math
 
 # Función Actividad 1 (Población de Ardillas)
@@ -915,5 +915,73 @@ def los_pollitos_animation(rate=22050, duration=0.5, output_file='los_pollitos_a
 
     # Mostrar la animación
     plt.show()
+
+# ---------------------------------------------------------------
+# Librería Python 8
+# ---------------------------------------------------------------
+def plot_sucesion(expr_inicial: str = '1/n', terminos_inicial: int = 20, max_terminos: int = 100):
+    """
+    Interfaz interactiva en Jupyter para graficar una sucesión definida por una expresión en n.
+
+    Parámetros:
+      expr_inicial (str): Expresión de la sucesión en función de n (p.ej. '1/n' o 'np.sin(n)').
+      terminos_inicial (int): Número inicial de términos a graficar.
+      max_terminos (int): Límite máximo de términos en el slider.
+    """
+    def _actualizar(expr: str, N: int):
+        n = np.arange(1, N + 1)
+        try:
+            y = eval(expr, {'n': n, 'np': np})
+        except Exception as e:
+            print(f"Error al evaluar '{expr}': {e}")
+            return
+        plt.figure(figsize=(8, 4))
+        plt.plot(n, y, marker='o', linestyle='-')
+        plt.xlabel('n')
+        plt.ylabel(expr)
+        plt.title(f'Sucesión: {expr}')
+        plt.grid(True)
+        plt.show()
+
+    # Widgets
+    expr_widget = widgets.Text(value=expr_inicial, description='Expresión:', layout=widgets.Layout(width='60%'))
+    terminos_widget = IntSlider(value=terminos_inicial, min=1, max=max_terminos, step=1,
+                                 description='Términos:', continuous_update=False)
+
+    # Salida enlazada
+    out = interactive_output(_actualizar, {'expr': expr_widget, 'N': terminos_widget})
+
+    # Mostrar interfaz
+    display(VBox([HBox([expr_widget, terminos_widget]), out]))
+
+def graficar_fibonacci(n: int = 20):
+    """
+    Calcula y grafica los primeros n términos de la sucesión de Fibonacci.
+
+    Parámetros:
+      n (int): Número de términos de la sucesión a generar.
+    """
+    if n <= 0:
+        print("El número de términos debe ser mayor que 0.")
+        return
+    # Generar sucesión de Fibonacci
+    fib = [0, 1]
+    for i in range(2, n):
+        fib.append(fib[i-1] + fib[i-2])
+    fib = fib[:n]
+
+    # Índices
+    indices = np.arange(1, n+1)
+
+    # Graficar
+    plt.figure(figsize=(8,4))
+    plt.plot(indices, fib, marker='o', linestyle='-')
+    plt.xlabel('n')
+    plt.ylabel('Fibonacci(n)')
+    plt.title(f'Sucesión de Fibonacci (primeros {n} términos)')
+    plt.grid(True)
+    plt.show()
+
+
 
 
