@@ -649,32 +649,37 @@ def resolver_seno(A):
 
 # Función para graficar la ecuación trigonométrica
 def graficar_funcion_trigonometrica(rango_x=(0, 2 * np.pi), num_puntos=1000, figsize=(8, 6)):
+    """
+    Grafica la ecuación 2·sin²(x) − sin(x) − 1 sobre el rango dado y marca
+    los valores x = π/2, 7π/6 y 11π/6.
+
+    Parámetros:
+      - rango_x (tuple): Tupla (x_min, x_max) para el dominio.
+      - num_puntos (int): Cantidad de puntos para el muestreo en x.
+      - figsize (tuple): Tamaño de la figura (ancho, alto).
+    """
     # Definir el rango de x
     x = np.linspace(rango_x[0], rango_x[1], num_puntos)
-    
-    # Definir la función trigonométrica
+    # Evaluar la función
     y = 2 * np.sin(x)**2 - np.sin(x) - 1
-    
+
     # Crear la figura
     plt.figure(figsize=figsize)
-    
-    # Graficar la función
-    plt.plot(x, y, label=r"$2\sin^2(x) - \sin(x) - 1$", color='blue')
-    
-    # Añadir líneas verticales y horizontales
-    plt.axhline(0, color='black', linewidth=1)  # Línea horizontal en y=0
+    plt.plot(x, y, label=r"$2\sin^2(x) - \sin(x) - 1$")
+
+    # Líneas auxiliares
+    plt.axhline(0, color='black', linewidth=1)
     plt.axvline(np.pi / 2, color='red', linestyle='--', label=r"$\frac{\pi}{2}$")
     plt.axvline(7 * np.pi / 6, color='red', linestyle='--', label=r"$\frac{7\pi}{6}$")
     plt.axvline(11 * np.pi / 6, color='red', linestyle='--', label=r"$\frac{11\pi}{6}$")
-    
-    # Etiquetas y leyenda
-    plt.title("Gráfica de $2\sin^2(x) - \sin(x) - 1 = 0$", fontsize=16)
+
+    # Título y etiquetas (cadena cruda para evitar invalid escape)
+    plt.title(r"Gráfica de $2\sin^2(x) - \sin(x) - 1 = 0$", fontsize=16)
     plt.xlabel("x", fontsize=12)
     plt.ylabel("y", fontsize=12)
+
     plt.grid(True)
     plt.legend()
-    
-    # Mostrar la gráfica
     plt.show()
 
 # Función para graficar las funciones trigonométricas secante, cosecante y cotangente
