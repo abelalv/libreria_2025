@@ -983,5 +983,90 @@ def graficar_fibonacci(n: int = 20):
     plt.show()
 
 
+# ------------------------------------------------------------------------------------
+# Funciones Actividad 8 (Sucesiones y TICS)
+# ------------------------------------------------------------------------------------
+def find_min_n(T, start=2, max_n=10_000_000):
+    """
+    Encuentra el valor mínimo de n tal que E(n) = n/(ln(n))^2 >= T.
+
+    Parámetros:
+    - T (float): Umbral crítico de eficiencia.
+    - start (int): Valor de inicio de la búsqueda (por defecto 2).
+    - max_n (int): Límite superior de búsqueda (por defecto 10_000_000).
+
+    Retorna:
+    - int o None: El valor mínimo de n que cumple la condición, o None si no se encuentra.
+    """
+    n = max(start, 2)
+    while n <= max_n:
+        if n / (np.log(n) ** 2) >= T:
+            return n
+        n += 1
+    return None
+
+
+def plot_efficiency(n_max, T):
+    """
+    Grafica la eficiencia E(n) = n/(ln(n))^2 para n en [2, n_max]
+    y marca el umbral T y el punto crítico n mínimo.
+
+    Parámetros:
+    - n_max (int): Valor máximo de n en la gráfica.
+    - T (float): Umbral crítico de eficiencia.
+    """
+    x = np.arange(2, n_max + 1)
+    y = x / (np.log(x) ** 2)
+
+    n_crit = find_min_n(T, start=2, max_n=n_max)
+    
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.plot(x, y, lw=2, label=r'$E(n)=\frac{n}{(\ln n)^2}$')
+    ax.axhline(T, color='red', linestyle='--', label=f'$T = {T}$')
+
+    if n_crit is not None:
+        y_crit = n_crit / (np.log(n_crit) ** 2)
+        ax.axvline(n_crit, color='green', linestyle='-.', label=f'$n_{{min}} = {n_crit}$')
+        ax.scatter([n_crit], [y_crit], color='green', zorder=5)
+        ax.text(n_crit, y_crit * 1.05, f'$n={n_crit}$', ha='center', color='green')
+
+    ax.set_xlim(2, n_max + int(0.05 * n_max))
+    ax.set_ylim(0, max(y.max(), T * 1.2))
+    ax.set_xlabel('n (nodos)')
+    ax.set_ylabel(r'$E(n)=\frac{n}{(\ln n)^2}$')
+    ax.set_title('Eficiencia relativa vs. número de nodos')
+    ax.grid(True)
+    ax.legend()
+    plt.show()
+
+
+def interactive_efficiency(default_n=500, default_T=100, max_n=5000):
+    """
+    Configura y despliega una interfaz interactiva para explorar E(n).
+
+    Parámetros:
+    - default_n (int): Valor inicial del slider para n máximo.
+    - default_T (float): Valor inicial del slider para el umbral T.
+    - max_n (int): Valor máximo permitido en el slider de n.
+    """
+    n_slider = IntSlider(value=default_n,
+                         min=2,
+                         max=max_n,
+                         step=10,
+                         description='n max:')
+
+    T_slider = FloatSlider(value=default_T,
+                           min=1,
+                           max=10 * default_T,
+                           step=1,
+                           description='T:')
+
+    ui = VBox([HBox([n_slider, T_slider])])
+    out = interactive_output(plot_efficiency, {'n_max': n_slider, 'T': T_slider})
+
+    display(ui, out)
+
+
+
 
 
