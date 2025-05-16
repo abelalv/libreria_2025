@@ -1045,7 +1045,7 @@ def plot_efficiency(n_max, T):
     plt.show()
 
 
-def interactive_efficiency(default_n=500, default_T=100, max_n=5000):
+def interactive_efficiency(default_n=500, default_T=100, max_n=1000000:
     """
     Configura y despliega una interfaz interactiva para explorar E(n).
 
