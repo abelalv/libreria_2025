@@ -991,7 +991,7 @@ def graficar_fibonacci(n: int = 20):
 # ------------------------------------------------------------------------------------
 # Funciones Actividad 8 (Sucesiones y TICS)
 # ------------------------------------------------------------------------------------
-def find_min_n(T, start=2, max_n=10_000_000):
+def find_min_n(T, start=2, max_n=10000):
     """
     Encuentra el valor mínimo de n tal que E(n) = n/(ln(n))^2 >= T.
 
@@ -1045,7 +1045,7 @@ def plot_efficiency(n_max, T):
     plt.show()
 
 
-def interactive_efficiency(default_n=500, default_T=100, max_n=1000000):
+def interactive_efficiency(default_n=500, default_T=100, max_n=10000):
     """
     Configura y despliega una interfaz interactiva para explorar E(n).
 
