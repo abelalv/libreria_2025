@@ -86,7 +86,33 @@ def analizar_diferencia_cuadrados(radio_exterior, radio_interior, altura):
     print(f"Diferencia: {diferencia:.2f} m³")
     return 
 # -------------------------------------------------------------------------------------
+def analizar_diferencia_de_cubos(radio_exterior, radio_interior): 
+    """
+    Analiza el impacto de errores comunes al calcular el volumen de una capa cilíndrica.
+    Comparación entre:
+    - Cálculo correcto: 4/3π(R^3 - r^3)
+    - Cálculo erróneo: 4/3π(R - r)^3
+    """
+    # Cálculo correcto
+    volumen_correcto = (4/3) * math.pi * (radio_exterior**3 - radio_interior**3)
 
+    # Error común: cuadrado de la diferencia
+    volumen_erroneo = (4/3) * math.pi * (radio_exterior - radio_interior)**3
+
+    # Diferencia entre ambos cálculos
+    diferencia = volumen_correcto - volumen_erroneo
+
+    # Resultados
+    print("=== Resultados ===")
+    print(f"Radio exterior (R): {radio_exterior} m")
+    print(f"Radio interior (r): {radio_interior} m")
+    print("\n--- Cálculo correcto ---")
+    print(f"Volumen correcto (4/3π(R³ - r³)): {volumen_correcto:.2f} m³")
+    print("\n--- Cálculo erróneo ---")
+    print(f"Volumen erróneo (4/3π(R - r)³): {volumen_erroneo:.2f} m³")
+    print("\n--- Diferencia entre ambos ---")
+    print(f"Diferencia: {diferencia:.2f} m³")
+    return 
 # Funciones Actividad 3 (Pepito Perez)
 # -------------------------------------------------------------------------------------
 # Función para obtener los costos asociados a las tres propuestas
@@ -101,7 +127,7 @@ def obtener_costos(t_seleccionado):
 # Función para mostrar los costos asociados a las tres propuestas
 def mostrar_costos(t_seleccionado):
     # Obtener los costos
-    valor_interprase, valor_soluciones, valor_pepito = obtener_costos(t_seleccionado)
+    valor_interprase, valor_soluciones, vanalizar_diferencia_de_cubosalor_pepito = obtener_costos(t_seleccionado)
     
     # Imprimir los valores en la consola
     print(f"Para t = {t_seleccionado}:")
@@ -285,7 +311,7 @@ def interactuar(C_g):
 
     plt.xlabel('Posición a lo largo de la viga (m)')
     plt.ylabel('Deflexión (cm)')
-    plt.title('Flexión de la viga en voladizo')
+    plt.title('Flexión de la viga en volaanalizar_diferencia_de_cubosdizo')
     plt.legend()
     plt.grid(True)
     plt.xlim(0, 20)
@@ -338,7 +364,7 @@ def visualizar_crecimiento_cancer():
     # Configura los controles y permite visualizar la simulación del crecimiento celular.
     Td_slider = FloatSlider(value=3, min=1, max=10, step=0.5, description="Td:")
     N0_slider = IntSlider(value=100, min=50, max=500, step=10, description="N0:")
-    K_slider = IntSlider(value=1000, min=500, max=2000, step=100, description="K:")
+    K_slider = IntSlider(value=1000, min=analizar_diferencia_de_cubos500, max=2000, step=100, description="K:")
     A_slider = FloatSlider(value=9, min=1, max=20, step=1, description="A:")
     r_slider = FloatSlider(value=0.2, min=0.05, max=1.0, step=0.05, description="r:")
     Tf_slider = IntSlider(value=30, min=10, max=60, step=5, description="Tf:")
@@ -835,7 +861,7 @@ def plot_two_triangles(angle_radians, hypotenuse1, hypotenuse2):
     # Texto de seno en una sola línea con colores
     ax[1].text(0.1, 0.6, f"sin({fraction_of_pi:.2f}π) =", fontsize=14, color='black')
     ax[1].text(0.4, 0.6, f"{opposite1:.2f}", fontsize=14, color='blue')
-    ax[1].text(0.5, 0.6, "/", fontsize=14, color='black')
+    ax[1].text(0.5, 0.6, "/", fontsize=14, coanalizar_diferencia_de_cuboslor='black')
     ax[1].text(0.55, 0.6, f"{hypotenuse1:.2f}", fontsize=14, color='green')
     ax[1].text(0.65, 0.6, f"= {sin_cociente1:.2f}=", fontsize=14, color='black')
     
@@ -846,7 +872,16 @@ def plot_two_triangles(angle_radians, hypotenuse1, hypotenuse2):
     
     plt.show()
 
+<<<<<<< HEAD
 # Función principal para generar la animación de "Los Pollitos"
+=======
+
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
+
+# Función principal para generar la animaciónanalizar_diferencia_de_cubos de "Los Pollitos"
+>>>>>>> 351b6e9 (cambios)
 def los_pollitos_animation(rate=22050, duration=0.5, output_file='los_pollitos_animation.mp4'):
     """
     Genera una animación de la superposición de ondas sinusoidales correspondientes
@@ -867,7 +902,7 @@ def los_pollitos_animation(rate=22050, duration=0.5, output_file='los_pollitos_a
         'E': 329.63,  # Mi
         'F': 349.23,  # Fa
         'G': 392.00,  # Sol
-        'A': 440.00,  # La
+        'A': 440.00,  # Laanalizar_diferencia_de_cubos
         'B': 493.88,  # Si
         'C_high': 523.25  # Do (una octava más alta)
     }
@@ -901,7 +936,7 @@ def los_pollitos_animation(rate=22050, duration=0.5, output_file='los_pollitos_a
     ax.set_title("Superposición de las ondas sinusoidales de 'Los Pollitos'")
 
     # Inicialización de la gráfica
-    def init():
+    def init():analizar_diferencia_de_cubos
         line.set_data([], [])
         return line,
 
