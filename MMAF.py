@@ -86,7 +86,7 @@ def analizar_diferencia_cuadrados(radio_exterior, radio_interior, altura):
     print(f"Diferencia: {diferencia:.2f} m³")
     return 
 # -------------------------------------------------------------------------------------
-def analizar_analizar_diferencia_de_cubos(radio_exterior, radio_interior): 
+def analizar_analizar_diferencia_cubo(radio_exterior, radio_interior): 
     """
     Analiza el impacto de errores comunes al calcular el volumen de una capa cilíndrica.
     Comparación entre:
