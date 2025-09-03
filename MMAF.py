@@ -127,7 +127,7 @@ def obtener_costos(t_seleccionado):
 # Función para mostrar los costos asociados a las tres propuestas
 def mostrar_costos(t_seleccionado):
     # Obtener los costos
-    valor_interprase, valor_soluciones, vanalizar_diferencia_de_cubosalor_pepito = obtener_costos(t_seleccionado)
+    valor_interprase, valor_soluciones, valor_pepito = obtener_costos(t_seleccionado)
     
     # Imprimir los valores en la consola
     print(f"Para t = {t_seleccionado}:")
