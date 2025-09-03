@@ -927,7 +927,7 @@ def los_pollitos_animation(rate=22050, duration=0.5, output_file='los_pollitos_a
     ax.set_title("Superposición de las ondas sinusoidales de 'Los Pollitos'")
 
     # Inicialización de la gráfica
-    def init():analizar_diferencia_de_cubos
+    def init():
         line.set_data([], [])
         return line,
 
