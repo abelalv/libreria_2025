@@ -872,16 +872,7 @@ def plot_two_triangles(angle_radians, hypotenuse1, hypotenuse2):
     
     plt.show()
 
-<<<<<<< HEAD
-# Función principal para generar la animación de "Los Pollitos"
-=======
-
-import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
-
 # Función principal para generar la animaciónanalizar_diferencia_de_cubos de "Los Pollitos"
->>>>>>> 351b6e9 (cambios)
 def los_pollitos_animation(rate=22050, duration=0.5, output_file='los_pollitos_animation.mp4'):
     """
     Genera una animación de la superposición de ondas sinusoidales correspondientes
