@@ -872,7 +872,7 @@ def plot_two_triangles(angle_radians, hypotenuse1, hypotenuse2):
     
     plt.show()
 
-# Función principal para generar la animaciónanalizar_diferencia_de_cubos de "Los Pollitos"
+# Función principal para generar la animación de "Los Pollitos"
 def los_pollitos_animation(rate=22050, duration=0.5, output_file='los_pollitos_animation.mp4'):
     """
     Genera una animación de la superposición de ondas sinusoidales correspondientes
@@ -893,7 +893,7 @@ def los_pollitos_animation(rate=22050, duration=0.5, output_file='los_pollitos_a
         'E': 329.63,  # Mi
         'F': 349.23,  # Fa
         'G': 392.00,  # Sol
-        'A': 440.00,  # Laanalizar_diferencia_de_cubos
+        'A': 440.00,  # La
         'B': 493.88,  # Si
         'C_high': 523.25  # Do (una octava más alta)
     }
