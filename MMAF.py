@@ -237,6 +237,92 @@ def interactuar_con_desgaste():
 
 # Funciones auxiliares para Python 4
 # -------------------------------------------------------------------------------------
+
+# Grafica la recta que pasa por dos puntos en el plano cartesiano.
+def grafica_recta(punto1, punto2):
+  x1, y1 = punto1
+  x2, y2 = punto2
+
+  # Verificar si es una recta vertical
+  if x1 == x2:
+    m = None
+    b = None
+    print(f"Ecuación de la recta: x = {x1}")
+    x_vals = np.full(200, x1)
+    y_vals = np.linspace(min(y1, y2)-5, max(y1, y2)+5, 200)
+  else:
+    # calcular pendiente y ordenada
+    m = (y2 - y1) / (x2 - x1)
+    b = y1 - m*x1
+    print(f"Ecuación de la recta: y = {m:.2f}x + {b:.2f}")
+    x_vals = np.linspace(min(x1, x2)-5, max(x1, x2)+5, 200)
+    y_vals = m*x_vals + b
+
+  # graficar
+  plt.figure(figsize=(6,4))
+  plt.plot(x_vals, y_vals, label="Recta")
+  plt.scatter([x1, x2], [y1, y2], color="red", zorder=5, label="Puntos dados")
+  plt.axhline(0, color="black", linewidth=0.5)
+  plt.axvline(0, color="black", linewidth=0.5)
+  plt.grid(True)
+  plt.legend()
+  plt.title("Recta a partir de dos puntos")
+  plt.show()
+
+# Grafica la recta a partir de su pendiente y un punto dado.
+def grafica_recta_pendiente_punto(m, punto):
+  x0, y0 = punto
+
+  # calcular ordenada al origen: y = mx + b -> b = y0 - m*x0
+  b = y0 - m*x0
+  print(f"Ecuación de la recta: y = {m:.2f}x + {b:.2f}")
+
+  # generar valores de x y la correspondiente y
+  x_vals = np.linspace(x0 - 5, x0 + 5, 200)
+  y_vals = m*x_vals + b
+
+  # graficar
+  plt.figure(figsize=(6,4))
+  plt.plot(x_vals, y_vals, label=f"Recta: y={m:.2f}x+{b:.2f}")
+  plt.scatter([x0], [y0], color="red", zorder=5, label="Punto dado")
+  plt.axhline(0, color="black", linewidth=0.5)
+  plt.axvline(0, color="black", linewidth=0.5)
+  plt.grid(True)
+  plt.legend()
+  plt.title("Recta a partir de pendiente y un punto")
+  plt.show()
+
+# Grafica dos rectas a partir de sus pendientes y puntos dados.
+def grafica_dos_rectas(m1, punto1, m2, punto2):
+  x1, y1 = punto1
+  x2, y2 = punto2
+
+  # calcular ordenadas al origen
+  b1 = y1 - m1*x1
+  b2 = y2 - m2*x2
+
+  print(f"Recta 1: y = {m1:.2f}x + {b1:.2f}")
+  print(f"Recta 2: y = {m2:.2f}x + {b2:.2f}")
+
+  # generar valores de x
+  x_vals = np.linspace(min(x1, x2) - 5, max(x1, x2) + 5, 200)
+
+  # calcular valores de y
+  y_vals1 = m1*x_vals + b1
+  y_vals2 = m2*x_vals + b2
+
+  # graficar
+  plt.figure(figsize=(6,4))
+  plt.plot(x_vals, y_vals1, label=f"Recta 1: y={m1:.2f}x+{b1:.2f}")
+  plt.plot(x_vals, y_vals2, label=f"Recta 2: y={m2:.2f}x+{b2:.2f}")
+  plt.scatter([x1, x2], [y1, y2], color="red", zorder=5, label="Puntos dados")
+  plt.axhline(0, color="black", linewidth=0.5)
+  plt.axvline(0, color="black", linewidth=0.5)
+  plt.grid(True)
+  plt.legend()
+  plt.title("Gráfica de dos rectas a partir de pendientes y puntos")
+  plt.show()
+
 # Función para graficar una parábola que pasa por tres puntos dados
 def grafica_parabola_puntos(p1, p2, p3):
   # Construir el sistema lineal para resolver a, b, c de y = ax^2 + bx + c
