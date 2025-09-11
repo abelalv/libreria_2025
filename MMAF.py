@@ -235,6 +235,138 @@ def interactuar_con_desgaste():
         D_c=FloatSlider(value=5, min=0, max=10, step=0.1, description='Capacidad Crítica D_c')
     )
 
+# Funciones auxiliares para Python 4
+# -------------------------------------------------------------------------------------
+# Función para graficar una parábola que pasa por tres puntos dados
+def grafica_parabola_puntos(p1, p2, p3):
+  # Construir el sistema lineal para resolver a, b, c de y = ax^2 + bx + c
+  A = np.array([
+      [p1[0]**2, p1[0], 1],
+      [p2[0]**2, p2[0], 1],
+      [p3[0]**2, p3[0], 1]
+  ])
+  Y = np.array([p1[1], p2[1], p3[1]])
+
+  # Resolver el sistema
+  a, b, c = np.linalg.solve(A, Y)
+
+  print("La parábola obtenida es: y = {:.2f}x^2 + {:.2f}x + {:.2f}".format(a, b, c))
+
+  # Graficar la parábola
+  x_vals = np.linspace(min(p1[0], p2[0], p3[0]) - 1, max(p1[0], p2[0], p3[0]) + 1, 200)
+  y_vals = a*x_vals**2 + b*x_vals + c
+
+  plt.figure(figsize=(6,4))
+  plt.plot(x_vals, y_vals, label="Parábola ajustada")
+  plt.scatter([p1[0], p2[0], p3[0]], [p1[1], p2[1], p3[1]], color="red", zorder=5, label="Puntos dados")
+  plt.axhline(0, color="black", linewidth=0.5)
+  plt.axvline(0, color="black", linewidth=0.5)
+  plt.legend()
+  plt.title("Parábola que pasa por tres puntos")
+  plt.grid(True)
+  plt.show()
+
+  return a, b, c
+
+
+# Función para graficar una parábola en forma canónica: y = a(x-h)^2 + k
+def grafica_parabola_can(a, h, k):
+    # Definir el rango de valores para x
+  x_vals = np.linspace(h-5, h+5, 200)
+  y_vals = a*(x_vals - h)**2 + k
+
+  print("La parábola en forma canónica es: y = {}(x - {})^2 + {}".format(a, h, k))
+
+  # Graficar
+  plt.figure(figsize=(6,4))
+  plt.plot(x_vals, y_vals, label="Parábola canónica")
+  plt.scatter([h], [k], color="red", zorder=5, label="Vértice ({},{})".format(h,k))
+  plt.axhline(0, color="black", linewidth=0.5)
+  plt.axvline(0, color="black", linewidth=0.5)
+  plt.legend()
+  plt.title("Parábola en forma canónica")
+  plt.grid(True)
+  plt.show()
+
+  return None
+    
+# Función para mostrar una parábola en forma canónica interactiva
+def interactive_parabola_can():
+  """
+  Crea un widget interactivo para graficar una parábola en forma canónica:
+      y = a(x-h)^2 + k
+
+  Los parámetros a, h, k se controlan con sliders.
+  """
+  
+  # Sliders para manipular los parámetros de la parábola
+  a_slider = widgets.FloatSlider(value=1, min=-5, max=5, step=0.1, description='a')
+  h_slider = widgets.FloatSlider(value=0, min=-5, max=5, step=0.5, description='h')
+  k_slider = widgets.FloatSlider(value=0, min=-5, max=5, step=0.5, description='k')
+
+  # Función que actualiza la gráfica
+  def update_grafica(a, h, k):
+    x_vals = np.linspace(h-5, h+5, 200)
+    y_vals = a*(x_vals - h)**2 + k
+
+    plt.figure(figsize=(6,4))
+    plt.plot(x_vals, y_vals, label=f"y = {a:.2f}(x - {h:.2f})^2 + {k:.2f}")
+    plt.scatter([h], [k], color="red", label=f"Vértice ({h},{k})")
+    plt.axhline(0, color="black", linewidth=0.5)
+    plt.axvline(0, color="black", linewidth=0.5)
+    plt.grid(True)
+    plt.legend()
+    plt.title("Parábola en forma canónica (interactiva)")
+    plt.show()
+
+  # Crear widget interactivo
+  parabola_widget = widgets.interactive(update_grafica, a=a_slider, h=h_slider, k=k_slider)
+  display(parabola_widget)
+
+
+# Función para mostrar una parábola en forma ccuadrática interactiva
+def interactive_cuadratica():
+  """
+  Crea un widget interactivo para graficar una función cuadrática en forma general:
+      y = ax^2 + bx + c
+
+  Los parámetros a, b, c se controlan con sliders.
+  """
+
+  # Sliders para los parámetros
+  a_slider = widgets.FloatSlider(value=1, min=-5, max=5, step=0.1, description='a')
+  b_slider = widgets.FloatSlider(value=0, min=-10, max=10, step=0.5, description='b')
+  c_slider = widgets.FloatSlider(value=0, min=-10, max=10, step=0.5, description='c')
+
+  # Función que actualiza la gráfica
+  def update_grafica_cuad(a, b, c):
+    x_vals = np.linspace(-10, 10, 400)
+    y_vals = a*x_vals**2 + b*x_vals + c
+
+    # vértice
+    if a != 0:
+      h = -b / (2*a)
+      k = a*h**2 + b*h + c
+    else:
+      h, k = None, None
+
+    plt.figure(figsize=(6,4))
+    plt.plot(x_vals, y_vals, label=f"y = {a:.2f}x² + {b:.2f}x + {c:.2f}")
+    if h is not None:
+      plt.scatter([h], [k], color="red", label=f"Vértice ({h:.2f},{k:.2f})")
+    plt.axhline(0, color="black", linewidth=0.5)
+    plt.axvline(0, color="black", linewidth=0.5)
+    plt.grid(True)
+    plt.legend()
+    plt.title("Función cuadrática (interactiva)")
+    plt.show()
+
+  # Crear widget interactivo
+  cuadratica_widget = widgets.interactive(update_grafica_cuad, a=a_slider, b=b_slider, c=c_slider)
+  display(cuadratica_widget)
+
+#--------------------------------------------------------------------------------------
+
 # Funciones Actividad 5 (Deflexión de una viga en voladizo)
 # -------------------------------------------------------------------------------------
 def deflexion_viga(x, t):
