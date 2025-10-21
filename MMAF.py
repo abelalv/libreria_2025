@@ -529,7 +529,7 @@ def interactuar(C_g):
 
     plt.xlabel('Posición a lo largo de la viga (m)')
     plt.ylabel('Deflexión (cm)')
-    plt.title('Flexión de la viga en volaanalizar_diferencia_de_cubosdizo')
+    plt.title('Flexión de la viga en voladizo')
     plt.legend()
     plt.grid(True)
     plt.xlim(0, 20)
@@ -582,7 +582,7 @@ def visualizar_crecimiento_cancer():
     # Configura los controles y permite visualizar la simulación del crecimiento celular.
     Td_slider = FloatSlider(value=3, min=1, max=10, step=0.5, description="Td:")
     N0_slider = IntSlider(value=100, min=50, max=500, step=10, description="N0:")
-    K_slider = IntSlider(value=1000, min=analizar_diferencia_de_cubos500, max=2000, step=100, description="K:")
+    K_slider = IntSlider(value=1000, min=500, max=2000, step=100, description="K:")
     A_slider = FloatSlider(value=9, min=1, max=20, step=1, description="A:")
     r_slider = FloatSlider(value=0.2, min=0.05, max=1.0, step=0.05, description="r:")
     Tf_slider = IntSlider(value=30, min=10, max=60, step=5, description="Tf:")
@@ -1079,7 +1079,7 @@ def plot_two_triangles(angle_radians, hypotenuse1, hypotenuse2):
     # Texto de seno en una sola línea con colores
     ax[1].text(0.1, 0.6, f"sin({fraction_of_pi:.2f}π) =", fontsize=14, color='black')
     ax[1].text(0.4, 0.6, f"{opposite1:.2f}", fontsize=14, color='blue')
-    ax[1].text(0.5, 0.6, "/", fontsize=14, coanalizar_diferencia_de_cuboslor='black')
+    ax[1].text(0.5, 0.6, "/", fontsize=14, color='black')
     ax[1].text(0.55, 0.6, f"{hypotenuse1:.2f}", fontsize=14, color='green')
     ax[1].text(0.65, 0.6, f"= {sin_cociente1:.2f}=", fontsize=14, color='black')
     
