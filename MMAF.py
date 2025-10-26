@@ -652,8 +652,10 @@ def plot_satellite(D, h, m):
     # --- Satélite ---
     sat = [R + h, 0]
     ax.plot(*sat, 'ro')
-    ax.text(*push_radially(sat, 1.05), f"SAT\nh={h:.0f} km", color='red',
-            ha='center', fontsize=9, bbox=dict(facecolor='white', alpha=0.7))
+
+    # Etiqueta ligeramente más arriba
+    label_offset = 200  # km
+    ax.text(sat[0], sat[1] + label_offset, f"SAT\nh={h:.0f} km", color='red', ha='center', fontsize=9, bbox=dict(facecolor='white', alpha=0.7))
 
     # --- Cono de cobertura ---
     phi = np.linspace(-th_view, th_view, 200)
