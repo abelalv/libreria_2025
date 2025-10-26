@@ -598,6 +598,7 @@ def visualizar_crecimiento_cancer():
 
 # Funciones Actividad 7 (Modelo de conexiones satelitales)
 # ------------------------------------------------------------------------------------
+
 # Funciones geométricas
 
 def push_radially(pt, factor=1.15):
@@ -654,7 +655,7 @@ def plot_satellite(D, h, m):
     ax.plot(*sat, 'ro')
 
     # Etiqueta ligeramente más arriba
-    label_offset = 200  # km
+    label_offset = 700  # km
     ax.text(sat[0], sat[1] + label_offset, f"SAT\nh={h:.0f} km", color='red', ha='center', fontsize=9, bbox=dict(facecolor='white', alpha=0.7))
 
     # --- Cono de cobertura ---
@@ -703,6 +704,7 @@ def build_interface_satellite():
                              {'D': D_text, 'h': h_slider, 'm': m_slider})
     display(ui, out)
 
+
 # -------------------------------------------------------------------------------------
 # Funciones Herramientas Computacionales 7
 # -------------------------------------------------------------------------------------
@@ -725,6 +727,14 @@ def plot_sine(desfase=0):
                ['0', r'$\frac{\pi}{2}$', r'$\pi$', r'$\frac{3\pi}{2}$', r'$2\pi$'])
     plt.grid(True)
     plt.show()
+
+def interactivo_desfase_seno():
+    """
+    Muestra un control interactivo (slider) que permite variar el desfase
+    en la función seno y visualizar su efecto en tiempo real.
+    """
+    desfase_slider = FloatSlider(min=0, max=4*np.pi, step=0.1, value=0, description='Desfase')
+    interact(plot_sine, desfase=desfase_slider)
 
 # Función para graficar la onda seno con amplitud, frecuencia, desfase y término constante
 def graficar_seno(amplitud, frecuencia, desfase, constante):
