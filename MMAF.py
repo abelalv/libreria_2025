@@ -598,76 +598,103 @@ def visualizar_crecimiento_cancer():
 
 # Funciones Actividad 7 (Modelo de conexiones satelitales)
 # ------------------------------------------------------------------------------------
-def push_radially(pt, factor=1.22):
-    # escala radial
+# Funciones geométricas
+
+def push_radially(pt, factor=1.15):
+    """Desplaza un punto radialmente hacia fuera (para ubicar etiquetas)."""
     return np.array(pt) * factor
 
-def surface_coverage_distance(h):
-    # distancia superficial lineal
-    R = 6378  # km
+
+def surface_coverage_distance(h, R=6378):
+    """Distancia lineal sobre la superficie visible desde altura h."""
     return np.sqrt((R + h)**2 - R**2)
 
-def required_threshold(D, m):
-    # umbral requerido
-    return D/2 + m
 
-def view_angle(h):
-    # ángulo de visión
-    R = 6378
+def required_threshold(D, m):
+    """Umbral mínimo de cobertura requerido."""
+    return D / 2 + m
+
+
+def view_angle(h, R=6378):
+    """Ángulo de visión en radianes desde el centro terrestre."""
     return np.arccos(R / (R + h))
 
+# Gráfico del sistema
+
 def plot_satellite(D, h, m):
-    # dibuja Tierra, ciudades y cobertura
+    """
+    Dibuja Tierra, Quibdó–Mitú, satélite y zona de cobertura.
+    Parámetros:
+        D : distancia superficial entre ciudades (km)
+        h : altura orbital (km)
+        m : margen de cobertura (km)
+    """
     R = 6378
     theta0 = 7.6 * np.pi / 180
-    d = surface_coverage_distance(h)
-    th_view = view_angle(h)
+    d = surface_coverage_distance(h, R)
+    th_view = view_angle(h, R)
 
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(6, 6))
     ax.set_aspect('equal')
 
-    # tierra
-    ax.add_patch(plt.Circle((0, 0), R, color='lightblue', alpha=0.4))
+    # --- Tierra ---
+    ax.add_patch(plt.Circle((0, 0), R, color='lightblue', alpha=0.4, label='Tierra'))
 
-    # ciudades
+    # --- Ciudades ---
     half = theta0 / 2
     Q = [R * np.cos(half), R * np.sin(half)]
     M = [R * np.cos(-half), R * np.sin(-half)]
-    ax.plot(*Q, 'ko'); ax.text(*push_radially(Q), 'Quibdó')
-    ax.plot(*M, 'ko'); ax.text(*push_radially(M), 'Mitú')
+    ax.plot(*Q, 'ko')
+    ax.plot(*M, 'ko')
+    ax.text(*push_radially(Q), 'Quibdó', fontsize=9)
+    ax.text(*push_radially(M), 'Mitú', fontsize=9)
 
-    # satélite
+    # --- Satélite ---
     sat = [R + h, 0]
-    ax.plot(*sat, 'ro'); ax.text(*push_radially(sat, 1.03), 'SAT')
+    ax.plot(*sat, 'ro')
+    ax.text(*push_radially(sat, 1.05), f"SAT\nh={h:.0f} km", color='red',
+            ha='center', fontsize=9, bbox=dict(facecolor='white', alpha=0.7))
 
-    # altura
-    ax.text(0.98, 0.95, f'h={h:.0f} km', transform=ax.transAxes,
-            ha='right', va='top', bbox=dict(facecolor='white', alpha=0.7))
+    # --- Cono de cobertura ---
+    phi = np.linspace(-th_view, th_view, 200)
+    coverage_edge = R * np.exp(1j * phi)  # puntos del borde visible
+    ax.plot(coverage_edge.real, coverage_edge.imag, 'r--', label='Zona visible')
 
-    # cobertura
-    phi = np.linspace(-th_view, th_view, 400)
-    ax.plot(R * np.cos(phi), R * np.sin(phi), 'r--')
+    # --- Líneas del cono de visión ---
+    ax.plot([R * np.cos(th_view), R + h],
+            [R * np.sin(th_view), 0], 'r:', alpha=0.7)
+    ax.plot([R * np.cos(-th_view), R + h],
+            [R * np.sin(-th_view), 0], 'r:', alpha=0.7)
 
-    # límites
+    # --- Límites del gráfico ---
     mrg = 2200
-    ax.set_xlim(-R - mrg, R + mrg); ax.set_ylim(-R - mrg, R + mrg)
-    ax.set_xlabel('km'); ax.set_ylabel('km')
-    ax.set_title(f'd={d:.0f} km (req ≥ {required_threshold(D, m):.0f})')
+    ax.set_xlim(-R - mrg, R + mrg)
+    ax.set_ylim(-R - mrg, R + mrg)
+    ax.set_xlabel('km')
+    ax.set_ylabel('km')
+
+    # --- Información ---
+    ax.set_title(f"Distancia visible d={d:.0f} km — Requerida ≥ {required_threshold(D, m):.0f} km",
+                 fontsize=10)
+    ax.legend(loc='lower left', fontsize=8)
     ax.grid(True)
     plt.show()
 
+# Interfaz interactiva
+
 def create_widgets():
-    # widgets
+    """Crea los widgets de entrada."""
     R = 6378
     theta0 = 7.6 * np.pi / 180
     D_pred = R * theta0
     D_text = FloatText(value=np.round(D_pred, 2), description='D (km):')
-    h_slider = FloatSlider(value=500, min=100, max=1200, step=10, description='h (km):')
-    m_slider = FloatSlider(value=0, min=0, max=300, step=10, description='margen (km):')
+    h_slider = FloatSlider(value=500, min=100, max=1200, step=10, description='Altura h (km):')
+    m_slider = FloatSlider(value=0, min=0, max=300, step=10, description='Margen m (km):')
     return D_text, h_slider, m_slider
 
-def build_interface_satelite():
-    # interfaz interactiva
+
+def build_interface_satellite():
+    """Construye y muestra la interfaz completa."""
     D_text, h_slider, m_slider = create_widgets()
     ui = VBox([HBox([D_text]), h_slider, m_slider])
     out = interactive_output(plot_satellite,
