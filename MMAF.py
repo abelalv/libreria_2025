@@ -917,15 +917,6 @@ def grados_a_radianes(grados):
     
     # Mostrar el resultado numérico
     print(f"{grados:.2f}° equivalen a {radianes:.4f} radianes")
-    
-    # Visualización gráfica opcional
-    plt.figure(figsize=(6, 1.5))
-    plt.axhline(0, color='gray', linewidth=1)
-    plt.scatter([0], [0], color='blue', s=80)
-    plt.text(0, 0.05, f"{radianes:.3f} rad", ha='center', fontsize=11)
-    plt.xlim(-1, 1)
-    plt.axis('off')
-    plt.show()
 
 
 def interactive_grados_a_radianes(valor_inicial=0):
@@ -1101,7 +1092,11 @@ def graficar_inversas():
     plt.show()
 
 # Función interactiva para graficar y resolver la ecuación seno: sin(θ) = A
-def resolver_seno(A):
+def resolver_seno(A, tolerancia=0.2):
+    """
+    Grafica la ecuación sin(θ) = A y muestra las soluciones aproximadas
+    en el rango [-2π, 2π]. Agrupa soluciones cercanas dentro de una tolerancia.
+    """
     # Definir el rango de θ en el intervalo [-2π, 2π]
     x = np.linspace(-2 * np.pi, 2 * np.pi, 2000)
     y = np.sin(x)
@@ -1109,49 +1104,60 @@ def resolver_seno(A):
     # Verificar que A esté dentro del rango válido [-1, 1]
     if A < -1 or A > 1:
         print("No existen soluciones reales para |A| > 1, ya que el seno está definido entre -1 y 1.")
+        return
 
-    else:
-        # Crear la figura
-        plt.figure(figsize=(10, 6))
-        plt.plot(x, y, label=r"$\sin(\theta)$", color='blue', linewidth=2)
-        plt.axhline(y=A, color='red', linestyle='--', label=f"$y = {A}$")
+    # Crear la figura
+    plt.figure(figsize=(10, 6))
+    plt.plot(x, y, label=r"$\sin(\theta)$", color='blue', linewidth=2)
+    plt.axhline(y=A, color='red', linestyle='--', label=f"$y = {A}$")
 
-        # Encontrar las soluciones aproximadas (cruces)
-        sol_indices = np.where(np.isclose(y, A, atol=0.01))[0]
-        sol_x = x[sol_indices]
+    # Encontrar los puntos donde sin(θ) ≈ A
+    sol_indices = np.where(np.isclose(y, A, atol=0.01))[0]
+    sol_x = x[sol_indices]
 
-        # Eliminar soluciones duplicadas cercanas
-        sol_x = np.unique(np.round(sol_x, 2))
+    # --- Agrupar soluciones cercanas ---
+    sol_x_agrupadas = []
+    if len(sol_x) > 0:
+        grupo_actual = [sol_x[0]]
+        for s in sol_x[1:]:
+            if abs(s - grupo_actual[-1]) < tolerancia:
+                grupo_actual.append(s)
+            else:
+                sol_x_agrupadas.append(np.mean(grupo_actual))
+                grupo_actual = [s]
+        sol_x_agrupadas.append(np.mean(grupo_actual))
+    sol_x = np.array(sol_x_agrupadas)
 
-        # Mostrar las soluciones gráficamente
+    # Mostrar las soluciones gráficamente
+    for sol in sol_x:
+        plt.plot(sol, A, 'ro')
+        plt.text(sol, A + 0.1, f"$\\theta = {sol:.2f}$", fontsize=11, color='red', ha='center')
+
+    # Ajustes del gráfico
+    plt.title(fr"Soluciones de $\sin(\theta) = {A}$ en el intervalo $[-2\pi, 2\pi]$", fontsize=14)
+    plt.xlabel(r"$\theta$", fontsize=12)
+    plt.ylabel(r"$\sin(\theta)$", fontsize=12)
+    plt.xlim(-2 * np.pi, 2 * np.pi)
+    plt.ylim(-1.5, 1.5)
+    plt.xticks(
+        [-2*np.pi, -3*np.pi/2, -np.pi, -np.pi/2, 0, np.pi/2, np.pi, 3*np.pi/2, 2*np.pi],
+        [r"$-2\pi$", r"$-\frac{3\pi}{2}$", r"$-\pi$", r"$-\frac{\pi}{2}$", "0",
+         r"$\frac{\pi}{2}$", r"$\pi$", r"$\frac{3\pi}{2}$", r"$2\pi$"]
+    )
+    plt.axhline(0, color='black', linewidth=1)
+    plt.axvline(0, color='black', linewidth=1)
+    plt.grid(True, linestyle='--', alpha=0.7)
+    plt.legend(fontsize=12)
+    plt.show()
+
+    # Imprimir soluciones numéricas
+    if len(sol_x) > 0:
+        print(f"Soluciones aproximadas para sin(θ) = {A}:")
         for sol in sol_x:
-            plt.plot(sol, A, 'ro')
-            plt.text(sol, A + 0.1, f"$\\theta = {sol:.2f}$", fontsize=11, color='red', ha='center')
+            print(f"  θ ≈ {sol:.2f} rad")
+    else:
+        print("No se encontraron soluciones dentro del rango mostrado.")
 
-        # Ajustes del gráfico
-        plt.title(fr"Soluciones de $\sin(\theta) = {A}$ en el intervalo $[-2\pi, 2\pi]$", fontsize=14)
-        plt.xlabel(r"$\theta$", fontsize=12)
-        plt.ylabel(r"$\sin(\theta)$", fontsize=12)
-        plt.xlim(-2 * np.pi, 2 * np.pi)
-        plt.ylim(-1.5, 1.5)
-        plt.xticks(
-            [-2*np.pi, -3*np.pi/2, -np.pi, -np.pi/2, 0, np.pi/2, np.pi, 3*np.pi/2, 2*np.pi],
-            [r"$-2\pi$", r"$-\frac{3\pi}{2}$", r"$-\pi$", r"$-\frac{\pi}{2}$", "0",
-            r"$\frac{\pi}{2}$", r"$\pi$", r"$\frac{3\pi}{2}$", r"$2\pi$"]
-        )
-        plt.axhline(0, color='black', linewidth=1)
-        plt.axvline(0, color='black', linewidth=1)
-        plt.grid(True, linestyle='--', alpha=0.7)
-        plt.legend(fontsize=12)
-        plt.show()
-
-        # Imprimir soluciones numéricas
-        if len(sol_x) > 0:
-            print(f"Soluciones aproximadas para sin(θ) = {A}:")
-            for sol in sol_x:
-                print(f"  θ ≈ {sol:.2f} rad")
-        else:
-            print("No se encontraron soluciones dentro del rango mostrado.")
 
 def interactivo_resolver_seno():
     """
