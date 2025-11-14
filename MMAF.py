@@ -1222,7 +1222,7 @@ def graficar_funcion_trigonometrica(rango_x=(0, 2 * np.pi), num_puntos=1000, fig
 # Funciones Herramientas Computacionales 8
 # -------------------------------------------------------------------------------------
 def evaluar_expresion(expr: str, N: int):
-    n = np.arange(1, N + 1)
+    n = np.arange(1, N + 1, dtype=int)   # Fuerza n a ser entero
     try:
         y = eval(expr, {'n': n, 'np': np})
         return n, y
@@ -1238,8 +1238,8 @@ def graficar_sucesion(n, y, expr: str):
     plt.figure(figsize=(10, 5))
     plt.plot(n, y, marker='o', linestyle='-')
 
-    # Quitar decimales en n
-    plt.xticks(n)
+    # Asegurar que las marcas del eje n son enteras
+    plt.xticks(n.astype(int))
 
     # Ajuste de dominio vertical
     if np.all(np.isfinite(y)):
@@ -1262,7 +1262,7 @@ def actualizar_grafica(expr: str, N: int):
 
 def plot_sucesion(expr_inicial: str = '1/n',
                   terminos_inicial: int = 20,
-                  max_terminos: int = 50):
+                  max_terminos: int = 200):   # <-- máximo ahora 200
 
     expr_widget = widgets.Text(
         value=expr_inicial,
@@ -1274,7 +1274,7 @@ def plot_sucesion(expr_inicial: str = '1/n',
         value=terminos_inicial,
         min=1,
         max=max_terminos,
-        step=1,
+        step=1,               # <-- Siempre entero
         description='Términos:',
         continuous_update=False
     )
@@ -1285,6 +1285,7 @@ def plot_sucesion(expr_inicial: str = '1/n',
     )
 
     display(VBox([HBox([expr_widget, terminos_widget]), out]))
+
 
 # ------------------------------------------------------------------------------------
 # Funciones Actividad 8 (Sucesiones y TICS)
