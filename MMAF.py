@@ -1218,44 +1218,77 @@ def graficar_funcion_trigonometrica(rango_x=(0, 2 * np.pi), num_puntos=1000, fig
     # Mostrar la gráfica
     plt.show()
 
-# ---------------------------------------------------------------
-# Librería Python 8
-# ---------------------------------------------------------------
-def plot_sucesion(expr_inicial: str = '1/n', terminos_inicial: int = 20, max_terminos: int = 100):
-    """
-    Interfaz interactiva en Jupyter para graficar una sucesión definida por una expresión en n.
+# -------------------------------------------------------------------------------------
+# Funciones Herramientas Computacionales 8
+# -------------------------------------------------------------------------------------
+def evaluar_expresion(expr: str, N: int):
+    n = np.arange(1, N + 1)
+    try:
+        y = eval(expr, {'n': n, 'np': np})
+        return n, y
+    except Exception as e:
+        print(f"Error al evaluar '{expr}': {e}")
+        return None, None
+    
 
-    Parámetros:
-      expr_inicial (str): Expresión de la sucesión en función de n (p.ej. '1/n' o 'np.sin(n)').
-      terminos_inicial (int): Número inicial de términos a graficar.
-      max_terminos (int): Límite máximo de términos en el slider.
-    """
-    def _actualizar(expr: str, N: int):
-        n = np.arange(1, N + 1)
-        try:
-            y = eval(expr, {'n': n, 'np': np})
-        except Exception as e:
-            print(f"Error al evaluar '{expr}': {e}")
-            return
-        plt.figure(figsize=(8, 4))
-        plt.plot(n, y, marker='o', linestyle='-')
-        plt.xlabel('n')
-        plt.ylabel(expr)
-        plt.title(f'Sucesión: {expr}')
-        plt.grid(True)
-        plt.show()
+def graficar_sucesion(n, y, expr: str):
+    if n is None or y is None:
+        return
 
-    # Widgets
-    expr_widget = widgets.Text(value=expr_inicial, description='Expresión:', layout=widgets.Layout(width='60%'))
-    terminos_widget = IntSlider(value=terminos_inicial, min=1, max=max_terminos, step=1,
-                                 description='Términos:', continuous_update=False)
+    plt.figure(figsize=(10, 5))
+    plt.plot(n, y, marker='o', linestyle='-')
 
-    # Salida enlazada
-    out = interactive_output(_actualizar, {'expr': expr_widget, 'N': terminos_widget})
+    # Quitar decimales en n
+    plt.xticks(n)
 
-    # Mostrar interfaz
+    # Ajuste de dominio vertical
+    if np.all(np.isfinite(y)):
+        ymin, ymax = np.min(y), np.max(y)
+        rango = ymax - ymin if ymax != ymin else 1
+        plt.ylim(ymin - 0.15 * rango, ymax + 0.15 * rango)
+
+    plt.xlabel('n')
+    plt.ylabel(expr)
+    plt.title(f'Sucesión: {expr}')
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+
+
+def actualizar_grafica(expr: str, N: int):
+    n, y = evaluar_expresion(expr, N)
+    graficar_sucesion(n, y, expr)
+
+
+def plot_sucesion(expr_inicial: str = '1/n',
+                  terminos_inicial: int = 20,
+                  max_terminos: int = 50):
+
+    expr_widget = widgets.Text(
+        value=expr_inicial,
+        description='Expresión:',
+        layout=widgets.Layout(width='60%')
+    )
+
+    terminos_widget = IntSlider(
+        value=terminos_inicial,
+        min=1,
+        max=max_terminos,
+        step=1,
+        description='Términos:',
+        continuous_update=False
+    )
+
+    out = interactive_output(
+        actualizar_grafica,
+        {'expr': expr_widget, 'N': terminos_widget}
+    )
+
     display(VBox([HBox([expr_widget, terminos_widget]), out]))
 
+# ------------------------------------------------------------------------------------
+# Funciones Actividad 8 (Sucesiones y TICS)
+# ------------------------------------------------------------------------------------
 def graficar_fibonacci(n: int = 20):
     """
     Calcula y grafica los primeros n términos de la sucesión de Fibonacci.
@@ -1284,10 +1317,6 @@ def graficar_fibonacci(n: int = 20):
     plt.grid(True)
     plt.show()
 
-
-# ------------------------------------------------------------------------------------
-# Funciones Actividad 8 (Sucesiones y TICS)
-# ------------------------------------------------------------------------------------
 def find_min_n(T, start=2, max_n=10000):
     """
     Encuentra el valor mínimo de n tal que E(n) = n/(ln(n))^2 >= T.
