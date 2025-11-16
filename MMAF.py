@@ -1221,7 +1221,7 @@ def graficar_funcion_trigonometrica(rango_x=(0, 2 * np.pi), num_puntos=1000, fig
 # -------------------------------------------------------------------------------------
 # Funciones Herramientas Computacionales 8
 # -------------------------------------------------------------------------------------
-def plot_sucesion_example(n_max):
+def plot_sucesion_example(n_max=100):
     """
     Grafica la sucesión 1/n para n en [1, n_max].
 
@@ -1419,7 +1419,7 @@ def plot_fibonacci_explicita(n_max=20):
     # Etiquetas y estilo
     plt.xlabel('n')
     plt.ylabel(r'$F_n$', rotation=0, labelpad=20)
-    plt.title('Sucesión de Fibonacci utilizando la fórmula explícita (Binet)')
+    plt.title('Sucesión de Fibonacci utilizando la fórmula explícita')
     plt.grid(True)
     plt.legend()
     plt.tight_layout()
@@ -1482,7 +1482,7 @@ def plot_efficiency(n_max, T):
     plt.show()
 
 
-def interactive_efficiency(default_n=500, default_T=100, max_n=8000):
+def interactive_efficiency(default_n=500, default_T=100, max_n=10000):
     """
     Configura y despliega una interfaz interactiva para explorar E(n).
 
