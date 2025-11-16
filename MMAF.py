@@ -1221,6 +1221,79 @@ def graficar_funcion_trigonometrica(rango_x=(0, 2 * np.pi), num_puntos=1000, fig
 # -------------------------------------------------------------------------------------
 # Funciones Herramientas Computacionales 8
 # -------------------------------------------------------------------------------------
+def plot_sucesion_example(n_max):
+    """
+    Grafica la sucesión 1/n para n en [1, n_max].
+
+    Parámetros:
+    - n_max (int): Valor máximo de n en la gráfica.
+    """
+    n = np.arange(1, n_max + 1)
+    y = 1 / n
+
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.scatter(n, y, marker='o', color='b', label=r'$1/n$')
+    ax.plot(n, y, color='b', alpha=0.7)
+
+    ax.set_xlabel('n')
+    ax.set_ylabel(r'$1/n$')
+    ax.set_title(r'Valores de la Sucesión $\frac{1}{n}$ a medida que $n$ aumenta')
+    ax.grid(True)
+    ax.legend()
+
+    plt.show()
+
+def plot_limit_sucesion(n_max=100, epsilon=0.1, L=0):
+    """
+    Grafica la sucesión a_n = 1/n, junto con las bandas ±epsilon
+    y el límite L. Marca además el primer N que cumple |a_n - L| < epsilon.
+
+    Parámetros:
+    - n_max (int): Valor máximo de n en la gráfica.
+    - epsilon (float): Margen epsilon para el criterio de límite.
+    - L (float): Valor del límite esperado.
+    """
+    
+    n = np.arange(1, n_max + 1)
+    a_n = 1 / n
+
+    # Determinar el primer N tal que |a_n - L| < epsilon
+    N_candidates = np.where(np.abs(a_n - L) < epsilon)[0]
+    N = N_candidates[0] + 1 if len(N_candidates) > 0 else None
+
+    fig, ax = plt.subplots(figsize=(10, 6))
+
+    # Graficar sucesión
+    ax.scatter(n, a_n, marker='o', color='b', label=r'$a_n = \frac{1}{n}$')
+    ax.plot(n, a_n, color='b', alpha=0.7)
+
+    # Líneas epsilon, -epsilon y L
+    ax.axhline(y=epsilon, color='r', linestyle='--', label=r'$\epsilon$')
+    ax.axhline(y=-epsilon, color='r', linestyle='--', label=r'$-\epsilon$')
+    ax.axhline(y=L, color='g', linestyle='--', label=r'$L$')
+
+    # Anotaciones de líneas
+    ax.annotate(r'$\epsilon$', xy=(n_max * 0.8, epsilon + 0.02), color='red')
+    ax.annotate(r'$-\epsilon$', xy=(n_max * 0.8, -epsilon - 0.04), color='red')
+    ax.annotate(r'$L$', xy=(n_max * 0.8, L + 0.02), color='green')
+
+    # Marcar N si existe
+    if N is not None:
+        ax.annotate(r'$N$', 
+                    xy=(N, a_n[N - 1]),
+                    xytext=(N + int(n_max * 0.05), a_n[N - 1] + 0.1),
+                    arrowprops=dict(facecolor='black', shrink=0.05))
+
+    ax.set_xlabel('n')
+    ax.set_ylabel(r'$a_n$', rotation=0, labelpad=20)
+    ax.set_title(r'Valores de la Sucesión $a_n = \frac{1}{n}$ a medida que $n$ aumenta')
+    ax.grid(True)
+    ax.legend()
+
+    plt.show()
+
+
+
 def evaluar_expresion(expr: str, N: int):
     n = np.arange(1, N + 1, dtype=int)   # Fuerza n a ser entero
     try:
@@ -1238,10 +1311,12 @@ def graficar_sucesion(n, y, expr: str):
     plt.figure(figsize=(10, 5))
     plt.plot(n, y, marker='o', linestyle='-')
 
-    # Asegurar que las marcas del eje n son enteras
-    plt.xticks(n.astype(int))
+    # --- Evitar superposición de etiquetas en X ---
+    num_labels = 15                         # máximo de etiquetas visibles
+    k = max(1, len(n) // num_labels)        # salto entre etiquetas
+    plt.xticks(n[::k])                      # solo algunas etiquetas
 
-    # Ajuste de dominio vertical
+    # Ajuste del rango vertical
     if np.all(np.isfinite(y)):
         ymin, ymax = np.min(y), np.max(y)
         rango = ymax - ymin if ymax != ymin else 1
@@ -1314,6 +1389,46 @@ def graficar_fibonacci(n: int = 20):
     plt.grid(True)
     plt.show()
 
+def plot_fibonacci_explicita(n_max=20):
+    """
+    Grafica los primeros n_max términos de la sucesión de Fibonacci
+    utilizando la fórmula explícita de Binet.
+
+    Parámetros:
+    - n_max (int): Número de términos a graficar.
+    """
+
+    # Constantes de Binet
+    phi = (1 + np.sqrt(5)) / 2
+    psi = (1 - np.sqrt(5)) / 2
+
+    # Calcular sucesión mediante la fórmula de Binet
+    fib_sequence = [(phi**i - psi**i) / np.sqrt(5) for i in range(n_max)]
+    naturales = np.arange(n_max)
+
+    # Crear gráfica
+    plt.figure(figsize=(10, 6))
+    plt.scatter(naturales, fib_sequence, marker='o', color='b', label='Fibonacci (fórmula explícita)')
+    plt.plot(naturales, fib_sequence, color='b', alpha=0.7)
+
+    # --- Control de etiquetas del eje X para evitar superposición ---
+    num_labels = 12
+    k = max(1, n_max // num_labels)
+    plt.xticks(naturales[::k])
+
+    # Etiquetas y estilo
+    plt.xlabel('n')
+    plt.ylabel(r'$F_n$', rotation=0, labelpad=20)
+    plt.title('Sucesión de Fibonacci utilizando la fórmula explícita (Binet)')
+    plt.grid(True)
+    plt.legend()
+    plt.tight_layout()
+
+    plt.show()
+
+# ------------------------------------------------------------------------------------
+# Funciones Actividad 8 (Sucesiones y TICS)
+# ------------------------------------------------------------------------------------
 def find_min_n(T, start=2, max_n=10000):
     """
     Encuentra el valor mínimo de n tal que E(n) = n/(ln(n))^2 >= T.
@@ -1332,10 +1447,6 @@ def find_min_n(T, start=2, max_n=10000):
             return n
         n += 1
     return None
-
-# ------------------------------------------------------------------------------------
-# Funciones Actividad 8 (Sucesiones y TICS)
-# ------------------------------------------------------------------------------------
 
 def plot_efficiency(n_max, T):
     """
