@@ -1286,10 +1286,6 @@ def plot_sucesion(expr_inicial: str = '1/n',
 
     display(VBox([HBox([expr_widget, terminos_widget]), out]))
 
-
-# ------------------------------------------------------------------------------------
-# Funciones Actividad 8 (Sucesiones y TICS)
-# ------------------------------------------------------------------------------------
 def graficar_fibonacci(n: int = 20):
     """
     Calcula y grafica los primeros n términos de la sucesión de Fibonacci.
@@ -1337,6 +1333,9 @@ def find_min_n(T, start=2, max_n=10000):
         n += 1
     return None
 
+# ------------------------------------------------------------------------------------
+# Funciones Actividad 8 (Sucesiones y TICS)
+# ------------------------------------------------------------------------------------
 
 def plot_efficiency(n_max, T):
     """
@@ -1372,7 +1371,7 @@ def plot_efficiency(n_max, T):
     plt.show()
 
 
-def interactive_efficiency(default_n=500, default_T=100, max_n=10000):
+def interactive_efficiency(default_n=500, default_T=100, max_n=8000):
     """
     Configura y despliega una interfaz interactiva para explorar E(n).
 
@@ -1389,7 +1388,7 @@ def interactive_efficiency(default_n=500, default_T=100, max_n=10000):
 
     T_slider = FloatSlider(value=default_T,
                            min=1,
-                           max=10 * default_T,
+                           max=2 * default_T,
                            step=1,
                            description='T:')
 
